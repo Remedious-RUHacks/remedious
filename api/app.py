@@ -15,22 +15,21 @@ def load_user(id):
 # User Management
 @app.route("/login", methods=["POST"])
 def login():
-    return request.form.get("email")
-    # if current_user.is_authenticated:
-    #     return {"Error": "Already Logged In"}
+    if current_user.is_authenticated:
+        return {"Error": "Already Logged In"}
 
-    # # Get Data from the html
-    # user = User.query.filter_by(email=request.form.get("email")).first()
+    # Get Data from the html
+    user = User.query.filter_by(email=request.form.get("email")).first()
         
-    # if not user:
-    #     return {"Error": "User Not Available"}
-    # elif user.verify_password(request.form.get("password")):
-    #     login_user(user)
-    #     return {"Success": "Logged In"}
-    # else:
-    #     return {"Error": "Incorrect Username or Password"}
+    if not user:
+        return {"Error": "User Not Available"}
+    elif user.verify_password(request.form.get("password")):
+        login_user(user)
+        return {"Success": "Logged In"}
+    else:
+        return {"Error": "Incorrect Username or Password"}
 
-    # return {"Error": "An Error Occured"}
+    return {"Error": "An Error Occured"}
 
 
 @app.route("/signup", methods=["POST"])

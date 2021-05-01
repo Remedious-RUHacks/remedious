@@ -1,5 +1,5 @@
 from flask import Flask, request
-from flask_login import LoginManager, current_user, logout_user, login_user, UserMixin 
+from flask_login import LoginManager, current_user, logout_user, login_user, UserMixin , login_required
 from modals import db, User, Academic, PersonalDetail, Covid, Symptom, Remedy
 from app_config import app
 
@@ -11,6 +11,68 @@ login_manager.init_app(app)
 @login_manager.user_loader
 def load_user(id):
     return User.query.get(id)
+
+@login_manager.user_loader
+def load_academic(id):
+    return Academic.query.get(id)
+
+@app.route("/current", methods=["GET"])
+def current():
+    # login_user(Academic.query.get(1))
+    return current_user.firstname
+
+# User Management
+@app.route("/login-academic", methods=["POST"])
+def login_academic():
+    if current_user.is_authenticated:
+        return {"Error": "Already Logged In"}
+
+    # Get Data from the html
+    user = Academic.query.filter_by(email=request.form.get("email")).first()
+        
+    if not user:
+        return {"Error": "User Not Available"}
+    elif user.verify_password(request.form.get("password")):
+        login_user(user)
+        return {"Success": "Logged In"}
+    else:
+        return {"Error": "Incorrect Username or Password"}
+
+    return {"Error": "An Error Occured"}
+
+
+@app.route("/signup-academic", methods=["POST"])
+def signup_academic():
+    if current_user.is_authenticated:
+        # Already Logged In
+        return {"Error": "Already LoggedIn"}
+
+    # Get all data from html
+    firstname = request.form.get("firstname")
+    lastname = request.form.get("lastname")
+    email = request.form.get("email")
+    password = request.form.get("password")
+
+    user = Academic.query.filter_by(email=email).first()
+    
+    if user:
+        return {"Error": "User Already Exist"}
+    else:
+        new_user = Academic(firstname, lastname, password, email)
+
+        db.session.add(new_user)
+        db.session.commit()            
+        return {"Success": f"Account Succesfull Created for {new_user.firstname}"}
+    return {"Error": "Error Occured!"}
+
+@login_required
+@app.route("/logout-academic", methods=["POST"])
+def logout_academic():
+    if current_user.is_authenticated:
+        logout_user()
+        return {"Success": "Logged out!"}
+    return {"Error": "Not Logged In"}
+
 
 
 # User Management
@@ -57,6 +119,7 @@ def signup():
         return {"Success": f"Account Succesfull Created for {new_user.firstname}"}
     return {"Error": "Error Occured!"}
 
+@login_required
 @app.route("/logout", methods=["POST"])
 def logout():
     if current_user.is_authenticated:
@@ -64,6 +127,7 @@ def logout():
         return {"Success": "Logged out!"}
     return {"Error": "Not Logged In"}
 
+@login_required
 @app.route("/personal-deatils", methods=["PUT", "GET"])
 def personal_details():
 
@@ -93,6 +157,7 @@ def personal_details():
                     "medication": new_detail.medication}
     return {"Personal Details": details}
          
+@login_required
 @app.route("/covid-questions", methods=["PUT", "GET"])
 def covid_questions():
 
@@ -129,7 +194,7 @@ def covid_questions():
                 }
     return {"Covid Details": details}
          
-         
+@login_required         
 @app.route("/symptoms", methods=["PUT", "GET"])
 def symptoms():
 
@@ -156,7 +221,7 @@ def symptoms():
                     }
     return {"Personal Details": details}
          
-         
+@login_required         
 @app.route("/remedy", methods=["PUT", "GET"])
 def remedy():
 

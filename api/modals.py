@@ -139,7 +139,7 @@ class Academic(db.Model, UserMixin):
         self.password = generate_password_hash(password, salt_length=10)
     
     def __repr__(self):
-        return '<Academic %r>' % self.name
+        return '<Academic %r>' % self.firstname
 
     def verify_password(self, pwd):
         return check_password_hash(self.password, pwd)

@@ -50,6 +50,6 @@ class Academic(db.Model, UserMixin):
 # Create database
 db.create_all()
 
-new_user = User("dev", "raj", "123", "email")
-db.session.add(new_user)
-db.session.commit()
+# new_user = User("dev", "raj", "123", "email")
+# db.session.add(new_user)
+# db.session.commit()

@@ -1,6 +1,6 @@
 from flask import Flask, request
 from flask_login import LoginManager, current_user, logout_user, login_user, UserMixin 
-from modals import db, User, Academic
+from modals import db, User, Academic, PersonalDetail, Covid, Symptom, Remedy
 from app_config import app
 
 
@@ -11,6 +11,7 @@ login_manager.init_app(app)
 @login_manager.user_loader
 def load_user(id):
     return User.query.get(id)
+
 
 # User Management
 @app.route("/login", methods=["POST"])
@@ -62,6 +63,140 @@ def logout():
         logout_user()
         return {"Success": "Logged out!"}
     return {"Error": "Not Logged In"}
+
+@app.route("/personal-deatils", methods=["PUT", "GET"])
+def personal_details():
+
+    # Is presonal_deatils
+    personal_detail = PersonalDetail.query.filter_by(user_id= current_user.id).first()
+
+    if not personal_detail and request.method=="PUT":
+        new_detail = PersonalDetail(request.form.get("age"), 
+                                    request.form.get("gender"),
+                                    request.form.get("ethnic_background"),
+                                    request.form.get("health_condition"),
+                                    request.form.get("medication"),
+                                    current_user)
+        db.session.add(new_detail)
+        db.session.commit()
+        details = {"id": new_detail.id, "age": new_detail.age, 
+                    "gender": new_detail.gender, 
+                    "ethnic_background": new_detail.ethnic_background, 
+                    "health_condition": new_detail.health_condition,
+                    "medication": new_detail.medication}
+        return {"Success": details}
+    
+    details = {"id": new_detail.id, "age": new_detail.age, 
+                    "gender": new_detail.gender, 
+                    "ethnic_background": new_detail.ethnic_background, 
+                    "health_condition": new_detail.health_condition,
+                    "medication": new_detail.medication}
+    return {"Personal Details": details}
+         
+@app.route("/covid-questions", methods=["PUT", "GET"])
+def covid_questions():
+
+    # Is presonal_deatils
+    covid_data = Covid.query.filter_by(user_id= current_user.id).first()
+
+    if not covid_data and request.method=="PUT":
+        new_detail = Covid(request.form.get("age"), 
+                                    request.form.get("is_symptoms"),
+                                    request.form.get("is_tested"),
+                                    request.form.get("result"),
+                                    request.form.get("is_treatment"),
+                                    request.form.get("treatment"),
+                                    request.form.get("is_recoverd"),
+                                    request.form.get("is_long_term"),
+                                    current_user)
+        db.session.add(new_detail)
+        db.session.commit()
+        details = {"id": new_detail.id, "is_symptoms": new_detail.is_symptoms, 
+                    "is_tested": new_detail.is_tested, 
+                    "result": new_detail.result, 
+                    "is_treatment": new_detail.is_treatment,
+                    "is_recoverd": new_detail.is_recoverd,
+                    "is_long_term": new_detail.is_long_term,
+                    }
+        return {"Success": details}
+    
+    details = {"id": new_detail.id, "is_symptoms": new_detail.is_symptoms, 
+                    "is_tested": new_detail.is_tested, 
+                    "result": new_detail.result, 
+                    "is_treatment": new_detail.is_treatment,
+                    "is_recoverd": new_detail.is_recoverd,
+                    "is_long_term": new_detail.is_long_term,
+                }
+    return {"Covid Details": details}
+         
+         
+@app.route("/symptoms", methods=["PUT", "GET"])
+def symptoms():
+
+    # Is Symptoms
+    symptoms = Symptom.query.filter_by(user_id= current_user.id).first()
+
+    if not symptoms and request.method=="PUT":
+        new_detail = Covid(request.form.get("age"), 
+                                    request.form.get("symptoms"),
+                                    request.form.get("level"),
+                                    request.form.get("frequency"),
+                                    current_user)
+        db.session.add(new_detail)
+        db.session.commit()
+        details = {"id": new_detail.id, "symptoms": new_detail.symptoms, 
+                    "level": new_detail.level, 
+                    "frequency": new_detail.frequency, 
+                    }
+        return {"Success": details}
+    
+    details = {"id": new_detail.id, "symptoms": new_detail.symptoms, 
+                    "level": new_detail.level, 
+                    "frequency": new_detail.frequency, 
+                    }
+    return {"Personal Details": details}
+         
+         
+@app.route("/remedy", methods=["PUT", "GET"])
+def remedy():
+
+    # Is Symptoms
+    remedy_data = Remedy.query.filter_by(user_id= current_user.id).first()
+
+    if not remedy_data and request.method=="PUT":
+        new_detail = Remedy(request.form.get("name"), 
+                                    request.form.get("amount"),
+                                    request.form.get("frequency"),
+                                    request.form.get("symptom"),
+                                    current_user,
+                                    request.form.get("is_level_freq_changed"),
+                                    request.form.get("level"),
+                                    request.form.get("symptom_frequency"),
+                                    )
+        db.session.add(new_detail)
+        db.session.commit()
+        details = {"id": new_detail.id, "name": new_detail.name, 
+                    "amount": new_detail.amount, 
+                    "frequency": new_detail.frequency, 
+                    "symptom": new_detail.symptom, 
+                    "is_level_freq_changed": new_detail.is_level_freq_changed, 
+                    "level": new_detail.level, 
+                    "symptom_frequency": new_detail.symptom_frequency, 
+                    }
+        return {"Success": details}
+    
+    details = {"id": new_detail.id, "name": new_detail.name, 
+                    "amount": new_detail.amount, 
+                    "frequency": new_detail.frequency, 
+                    "symptom": new_detail.symptom, 
+                    "is_level_freq_changed": new_detail.is_level_freq_changed, 
+                    "level": new_detail.level, 
+                    "symptom_frequency": new_detail.symptom_frequency, 
+                    }
+    return {"Personal Details": details}
+         
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)

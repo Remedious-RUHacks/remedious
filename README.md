@@ -15,17 +15,17 @@ The app also includes a discord bot that extracts validated information from rel
 **Installation**
 
 
-1.Create a new Flutter Project
+  1.Create a new Flutter Project
 
-2. Make sure you have flutter web enabled (See flutter docs)
+  2. Make sure you have flutter web enabled (See flutter docs)
 
-3. Delete the test,lib,web and pubspec.yaml files
+  3. Delete the test,lib,web and pubspec.yaml files
 
-4. Paste all the files from the github front end folder
+  4. Paste all the files from the github front end folder
 
-5. Run flutter pub get in the project root terminal
+  5. Run flutter pub get in the project root terminal
 
-6. And voila, it is set up on your system
+  6. And voila, it is set up on your system
 
 **Packages**
 

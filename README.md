@@ -15,7 +15,7 @@ The app also includes a discord bot that extracts validated information from rel
 **Installation**
 
 
-  1.Create a new Flutter Project
+  1. Create a new Flutter Project
 
   2. Make sure you have flutter web enabled (See flutter docs)
 

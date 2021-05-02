@@ -31,3 +31,5 @@ Please refer to [this repo](https://github.com/Remedious-RUHacks/discord-bot)
 ## Testing
 
 [Web app](http://remedious.tech/)
+
+[Discord bot](https://discord.com/oauth2/authorize?client_id=837881881252724767&permissions=8&scope=bot)

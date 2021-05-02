@@ -6,6 +6,7 @@ import 'package:remedious/Academic/AcademicSignUp.dart';
 import 'package:remedious/DataModels/GeneralUser.dart';
 import 'package:remedious/General/GeneralEmailVerification.dart';
 import 'package:remedious/General/GeneralSignUp.dart';
+import 'package:remedious/General/Home.dart';
 import 'package:remedious/General/Onboarding.dart';
 import 'package:remedious/styles.dart';
 import 'package:url_strategy/url_strategy.dart';
@@ -41,6 +42,7 @@ class MyApp extends StatelessWidget {
         //   academicEmailVerificationRoute:(context)=>AcademicEmailVerification(),
         //
         //   onboardingRoute:(context)=>Onboarding();
+        //   generalHomeRoute:(context)=>GeneralHome();
         // },
         onGenerateRoute: (settings) {
           switch (settings.name) {
@@ -99,6 +101,14 @@ class MyApp extends StatelessWidget {
               return MaterialPageRoute(
                   builder: (context) {
                     return Onboarding(user);
+                  }
+              );
+              break;
+            case generalHomeRoute:
+              final GeneralUser user = settings.arguments as GeneralUser;
+              return MaterialPageRoute(
+                  builder: (context) {
+                    return GeneralHome(user);
                   }
               );
               break;

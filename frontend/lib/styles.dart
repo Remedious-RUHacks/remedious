@@ -14,6 +14,7 @@ const generalLoginRoute = '/general/login';
 const generalSignUpRoute = '/general/signUp';
 const generalEmailVerificationRoute = '/general/email-verification';
 const onboardingRoute = '/general/onboarding';
+const generalHomeRoute = '/general/home';
 
 const academicLoginRoute = '/academic/login';
 const academicSignUpRoute = '/academic/signUp';

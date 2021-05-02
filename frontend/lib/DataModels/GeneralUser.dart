@@ -1,3 +1,6 @@
+import 'package:flutter/cupertino.dart';
+import 'package:remedious/DataModels/Symptom&Remedy.dart';
+
 class GeneralUser{
 
   String firstName;
@@ -13,7 +16,7 @@ class GeneralUser{
 
   bool symptom;
   bool test;
-  bool testResult;
+  String testResult;
 
   bool treatment;
   String treatments;
@@ -21,10 +24,12 @@ class GeneralUser{
   bool recovered;
 
   bool longTerm;
-  String symptoms;
+  List<Symptom> symptoms;
   int painLevel;
   int symptomLevel;
 
-  GeneralUser({this.firstName,this.lastName,this.email,this.password, this.age,this.gender,this.ethnicBackground,this.healthConditions,this.medication,this.symptom,this.test,this.testResult
-  ,this.treatment,this.treatments,this.recovered,this.longTerm,this.symptoms,this.painLevel,this.symptomLevel});
+  List<Remedy> remedies;
+
+  GeneralUser({@required this.firstName,@required this.lastName,@required this.email,@required this.password, this.age = 21,this.gender = "Male",this.ethnicBackground="Asian",this.healthConditions = "",this.medication = "",this.symptom = false,this.test=false,this.testResult="Negative"
+  ,this.treatment = false,this.treatments = "",this.recovered=true,this.longTerm = false,this.symptoms= const <Symptom>[],this.painLevel = 0,this.symptomLevel = 0,this.remedies = const <Remedy>[]});
 }

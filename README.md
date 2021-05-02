@@ -18,9 +18,13 @@ The app also includes a discord bot that extracts validated information from rel
 **Packages**
 
 google_fonts: ^1.1.1
+
 url_strategy: ^0.2.0
+
 charts_flutter: ^0.10.0
+
 pie_chart: 4.0.1
+
 http: ^0.12.0+2
 
 

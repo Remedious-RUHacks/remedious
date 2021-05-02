@@ -12,14 +12,45 @@ login_manager.init_app(app)
 def load_user(id):
     return User.query.get(id)
 
-@login_manager.user_loader
-def load_academic(id):
-    return Academic.query.get(id)
+@login_required
+@app.route("/dashboard", methods=["GET"])
+def dashboard():
+    personal_detail = PersonalDetail.query.all()
 
-@app.route("/current", methods=["GET"])
-def current():
-    # login_user(Academic.query.get(1))
-    return current_user.firstname
+    new_pers_details =[] 
+    for new_detail in personal_detail:
+        new_pers_details.append({"id": new_detail.id, "age": new_detail.age, 
+                        "gender": new_detail.gender, 
+                        "ethnic_background": new_detail.ethnic_background, 
+                        "health_condition": new_detail.health_condition,
+                        "medication": new_detail.medication})
+    all_remedy_details = Remedy.query.all()
+
+    remedy_details =[] 
+    for new_detail in all_remedy_details:
+        remedy_details.append({"id": new_detail.id, "name": new_detail.name, 
+                    "amount": new_detail.amount, 
+                    "frequency": new_detail.frequency, 
+                    "is_level_freq_changed": new_detail.is_level_freq_changed, 
+                    "level": new_detail.level, 
+                    "symptom_frequency": new_detail.symptom_frequency, 
+                    "date": new_detail.date
+                    })
+
+    all_symptom_details = Symptom.query.all()
+
+    symptom_details =[] 
+    for new_detail in all_symptom_details:
+        symptom_details.append({"id": new_detail.id, "symptoms": new_detail.symptoms, 
+                        "level": new_detail.level, 
+                        "frequency": new_detail.frequency, 
+                        "date": new_detail.date
+                        })
+    return {"personal-data": new_pers_details, 
+    "Remedy Details": remedy_details,
+    "Symptoms Details": symptom_details
+     }
+
 
 # User Management
 @app.route("/login-academic", methods=["POST"])
@@ -131,10 +162,7 @@ def logout():
 @app.route("/personal-deatils", methods=["PUT", "GET"])
 def personal_details():
 
-    # Is presonal_deatils
-    personal_detail = PersonalDetail.query.filter_by(user_id= current_user.id).first()
-
-    if not personal_detail and request.method=="PUT":
+    if request.method=="PUT":
         new_detail = PersonalDetail(request.form.get("age"), 
                                     request.form.get("gender"),
                                     request.form.get("ethnic_background"),
@@ -150,11 +178,15 @@ def personal_details():
                     "medication": new_detail.medication}
         return {"Success": details}
     
-    details = {"id": new_detail.id, "age": new_detail.age, 
-                    "gender": new_detail.gender, 
-                    "ethnic_background": new_detail.ethnic_background, 
-                    "health_condition": new_detail.health_condition,
-                    "medication": new_detail.medication}
+    alldetails = PersonalDetail.query.all()
+
+    details =[] 
+    for new_detail in alldetails:
+        details.append({"id": new_detail.id, "age": new_detail.age, 
+                        "gender": new_detail.gender, 
+                        "ethnic_background": new_detail.ethnic_background, 
+                        "health_condition": new_detail.health_condition,
+                        "medication": new_detail.medication})
     return {"Personal Details": details}
          
 @login_required
@@ -162,11 +194,9 @@ def personal_details():
 def covid_questions():
 
     # Is presonal_deatils
-    covid_data = Covid.query.filter_by(user_id= current_user.id).first()
 
-    if not covid_data and request.method=="PUT":
-        new_detail = Covid(request.form.get("age"), 
-                                    request.form.get("is_symptoms"),
+    if request.method=="PUT":
+        new_detail = Covid(request.form.get("is_symptoms"),
                                     request.form.get("is_tested"),
                                     request.form.get("result"),
                                     request.form.get("is_treatment"),
@@ -185,23 +215,25 @@ def covid_questions():
                     }
         return {"Success": details}
     
-    details = {"id": new_detail.id, "is_symptoms": new_detail.is_symptoms, 
-                    "is_tested": new_detail.is_tested, 
-                    "result": new_detail.result, 
-                    "is_treatment": new_detail.is_treatment,
-                    "is_recoverd": new_detail.is_recoverd,
-                    "is_long_term": new_detail.is_long_term,
-                }
+
+    alldetails = Covid.query.all()
+
+    details =[] 
+    for new_detail in alldetails:
+        details.append({"id": new_detail.id, "is_symptoms": new_detail.is_symptoms, 
+                        "is_tested": new_detail.is_tested, 
+                        "result": new_detail.result, 
+                        "is_treatment": new_detail.is_treatment,
+                        "is_recoverd": new_detail.is_recoverd,
+                        "is_long_term": new_detail.is_long_term,
+                    })
     return {"Covid Details": details}
          
 @login_required         
 @app.route("/symptoms", methods=["PUT", "GET"])
 def symptoms():
 
-    # Is Symptoms
-    symptoms = Symptom.query.filter_by(user_id= current_user.id).first()
-
-    if not symptoms and request.method=="PUT":
+    if request.method=="PUT":
         new_detail = Symptom( request.form.get("symptoms"),
                                     request.form.get("level"),
                                     request.form.get("frequency"),
@@ -217,11 +249,15 @@ def symptoms():
                     }
         return {"Success": details}
     
-    details = {"id": new_detail.id, "symptoms": new_detail.symptoms, 
-                    "level": new_detail.level, 
-                    "frequency": new_detail.frequency, 
-                    "date": new_detail.date
-                    }
+    alldetails = Symptom.query.all()
+
+    details =[] 
+    for new_detail in alldetails:
+        details.append({"id": new_detail.id, "symptoms": new_detail.symptoms, 
+                        "level": new_detail.level, 
+                        "frequency": new_detail.frequency, 
+                        "date": new_detail.date
+                        })
     return {"Symptoms Details": details}
          
 @login_required         
@@ -229,13 +265,11 @@ def symptoms():
 def remedy():
 
     # Is Symptoms
-    remedy_data = Remedy.query.filter_by(user_id= current_user.id).first()
 
-    if not remedy_data and request.method=="PUT":
+    if request.method=="PUT":
         new_detail = Remedy(request.form.get("name"), 
                                     request.form.get("amount"),
                                     request.form.get("frequency"),
-                                    request.form.get("symptom"),
                                     current_user,
                                     request.form.get("is_level_freq_changed"),
                                     request.form.get("level"),
@@ -247,7 +281,6 @@ def remedy():
         details = {"id": new_detail.id, "name": new_detail.name, 
                     "amount": new_detail.amount, 
                     "frequency": new_detail.frequency, 
-                    "symptom": new_detail.symptom, 
                     "is_level_freq_changed": new_detail.is_level_freq_changed, 
                     "level": new_detail.level, 
                     "symptom_frequency": new_detail.symptom_frequency, 
@@ -255,15 +288,18 @@ def remedy():
                     }
         return {"Success": details}
     
-    details = {"id": new_detail.id, "name": new_detail.name, 
+    alldetails = Remedy.query.all()
+
+    details =[] 
+    for new_detail in alldetails:
+        details.append({"id": new_detail.id, "name": new_detail.name, 
                     "amount": new_detail.amount, 
                     "frequency": new_detail.frequency, 
-                    "symptom": new_detail.symptom, 
                     "is_level_freq_changed": new_detail.is_level_freq_changed, 
                     "level": new_detail.level, 
                     "symptom_frequency": new_detail.symptom_frequency, 
                     "date": new_detail.date
-                    }
+                    })
     return {"Remedy Details": details}
          
 

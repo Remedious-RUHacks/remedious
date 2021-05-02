@@ -22,7 +22,7 @@ class User(db.Model, UserMixin):
 
     
     def __repr__(self):
-        return '<User %r>' % self.username
+        return '<User %r>' % self.firstname
 
     def verify_password(self, pwd):
         return check_password_hash(self.password, pwd)
@@ -86,11 +86,12 @@ class Symptom(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     user = db.relationship('User', backref=db.backref('symptoms', lazy=True))
 
-    def __init__(self, symptoms, level, frequency, user):
+    def __init__(self, symptoms, level, frequency, user, date):
         self.symptoms = symptoms
         self.level = level
         self.frequency = frequency
         self.user = user
+        self.date = date
 
     def __repr__(self): 
         return '<Symptom %r>' % self.id
@@ -102,25 +103,24 @@ class Remedy(db.Model):
     amount = db.Column(db.String(180), nullable=False)
     frequency = db.Column(db.String(180), nullable=False)
     date = db.Column(db.String(180), nullable=False)
-    symptom_id = db.Column(db.Integer, db.ForeignKey('symptom.id'), nullable=False)
-    symptom = db.relationship('Symptom', backref=db.backref('remedys', lazy=True))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     user = db.relationship('User', backref=db.backref('remedy', lazy=True))
+    
     
     # Is Level of pain or frequecny changed by taking this medicine
     is_level_freq_changed = db.Column(db.String(10), nullable=False)
     level = db.Column(db.String(180), nullable=False)
     symptom_frequency = db.Column(db.String(180), nullable=False)
 
-    def __init__(self, name, amount, frequency, symptom, user, is_level_freq_changed, level, symptom_frequency):
+    def __init__(self, name, amount, frequency, user, is_level_freq_changed, level, symptom_frequency, date):
         self.name = name
         self.amount = amount
         self.frequency = frequency
-        self.symptom = symptom
         self.user = user
         self.is_level_freq_changed = is_level_freq_changed
         self.level = level
         self.symptom_frequency = symptom_frequency
+        self.date = date
 
     def __repr__(self): 
         return '<Remedy %r>' % self.id
@@ -148,13 +148,14 @@ class Academic(db.Model, UserMixin):
 
 
 # Create database
-db.create_all()
+# db.create_all()
 
-# new_user = User("dev", "raj", "123", "email")
+# new_user = Academic("dev", "raj", "123", "email5")
 # db.session.add(new_user)
 # db.session.commit()
 
-user = User.query.filter_by(id=1).first()
-new_details = PersonalDetail(12, "male", "adsjfa", "jasf", "af", user)
-db.session.add(new_details)
-db.session.commit()
+# user = User.query.filter_by(id=1).first()
+# print(user)
+# new_details = PersonalDetail(12, "male", "adsjfa", "jasf", "af", user)
+# db.session.add(new_details)
+# db.session.commit()

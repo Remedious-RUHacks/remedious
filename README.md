@@ -14,4 +14,4 @@ Project submitted to RU Hacks 2021: Digital
 
 ##Discord bot 
 
-Please refer to [this repo] (https://github.com/Remedious-RUHacks/discord-bot)
+Please refer to [this repo](https://github.com/Remedious-RUHacks/discord-bot)

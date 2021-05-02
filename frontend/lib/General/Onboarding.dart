@@ -7,8 +7,6 @@ import 'package:remedious/styles.dart';
 
 // ignore: must_be_immutable
 class Onboarding extends StatefulWidget {
-  Onboarding(this.user);
-  GeneralUser user;
   @override
   _OnboardingState createState() => _OnboardingState();
 }
@@ -49,7 +47,7 @@ class _OnboardingState extends State<Onboarding> with TickerProviderStateMixin {
   @override
   void initState(){
     super.initState();
-    user = widget.user;
+    user = ModalRoute.of(context).settings.arguments;
 
     myFocusNode.addListener(() {setState(() {});});
     myFocusNode2.addListener(() {setState(() {});});
@@ -98,7 +96,7 @@ class _OnboardingState extends State<Onboarding> with TickerProviderStateMixin {
                             tabs: [
                               Tab(icon: Icon(Icons.note),text: "Personal",),
                               Tab(icon: Icon(Icons.masks),text: "COVID-19 Questions",),
-                              Tab(icon: Icon(Icons.medication),text: "Remedy details",),
+                              Tab(icon: Icon(Icons.medical_services),text: "Remedy details",),
                             ],
                             labelColor: blue1,
                             unselectedLabelColor: Colors.white,

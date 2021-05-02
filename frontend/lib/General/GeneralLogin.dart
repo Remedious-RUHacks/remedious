@@ -164,7 +164,7 @@ class _GeneralLoginState extends State<GeneralLogin> {
                 SizedBox(height:30),
                 InkWell(
                   onTap: (){
-                    Navigator.pushNamed(context, onboardingRoute,arguments: GeneralUser(firstName: "Sid",lastName: "Aggy",email: emailController.text,password: passController.text,symptoms: <Symptom>[Symptom("A high temperature")]));
+                    Navigator.pushNamed(context, generalHomeRoute,arguments: GeneralUser(firstName: "Sid",lastName: "Aggy",email: emailController.text,password: passController.text,symptoms: <Symptom>[Symptom("A high temperature")]));
                   },
                   child: Container(
                     height: 40,

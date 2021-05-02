@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:remedious/DataModels/GeneralUser.dart';
 import 'package:remedious/styles.dart';
 
 Widget bottomBar(context){
@@ -240,4 +241,84 @@ class _CustomSwitchState extends State<CustomSwitch>
       },
     );
   }
+}
+
+Widget appBar2(BuildContext context,GeneralUser user){
+  return    Container(
+    height:60,
+    width: MediaQuery.of(context).size.width,
+    color: Colors.black,
+    child: Stack(
+      children: [
+        Row(
+          children: <Widget>[
+            SizedBox(width:30),
+            Image(
+              image: AssetImage('images/Logo.png'),
+            ),
+            SizedBox(width:30),
+            Text("Home",style: TextStyle(
+                color: blue1,
+                fontSize: 14
+            ),),
+            SizedBox(width:30),
+            Text("Add a new symptom",style: TextStyle(
+                color: Colors.white,
+                fontSize: 14
+            ),),
+            SizedBox(width:30),
+            Text("Add a new remedy",style: TextStyle(
+                color: Colors.white,
+                fontSize: 14
+            ),),
+          ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Center(
+              child: Icon(Icons.notifications,color:blue1),
+
+            ),
+            SizedBox(width: 20,),
+            Center(
+              child: Container(
+                height: 45,
+                constraints: BoxConstraints(
+                    minWidth: 150
+                ),
+                decoration: BoxDecoration(
+                  border: Border.all(color: blue1,width: 2),
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    SizedBox(width:20),
+                    Container(
+                        height: 30,
+                        width: 30,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(color: blue1),
+                        ),
+                        child: Icon(Icons.person,color:blue1,size: 25,)
+                    ),
+                    SizedBox(width: 20,),
+                    Text(user.firstName,style: TextStyle(
+                        color: blue1,
+                        fontSize: 14
+                    ),)
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(width: 30,)
+          ],
+        )
+      ],
+    ),
+  );
 }

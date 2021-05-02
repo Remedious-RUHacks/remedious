@@ -19,3 +19,4 @@ const generalHomeRoute = '/general/home';
 const academicLoginRoute = '/academic/login';
 const academicSignUpRoute = '/academic/signUp';
 const academicEmailVerificationRoute = '/academic/email-verification';
+const academicHomeRoute = '/academic/home';

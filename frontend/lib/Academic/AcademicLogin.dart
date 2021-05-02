@@ -1,6 +1,8 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:remedious/CommonWidgetMaker.dart';
+import 'package:remedious/DataModels/GeneralUser.dart';
+import 'package:remedious/DataModels/Symptom&Remedy.dart';
 import 'package:remedious/styles.dart';
 
 class AcademicLogin extends StatefulWidget {
@@ -162,7 +164,7 @@ class _AcademicLoginState extends State<AcademicLogin> {
                 SizedBox(height:30),
                 InkWell(
                   onTap: (){
-                    Navigator.pushNamed(context, generalLoginRoute);
+                    Navigator.pushNamed(context, academicHomeRoute,arguments: GeneralUser(firstName: "Sid",lastName: "Aggy",email: emailController.text,password: passController.text,symptoms: <Symptom>[Symptom("A high temperature")]));
                   },
                   child: Container(
                     height: 40,

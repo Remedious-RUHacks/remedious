@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:http/http.dart';
 import 'package:remedious/CommonWidgetMaker.dart';
 import 'package:remedious/DataModels/GeneralUser.dart';
 import 'package:remedious/DataModels/Symptom&Remedy.dart';
 import 'package:remedious/styles.dart';
+import 'package:smooth_scroll_web/smooth_scroll_web.dart';
 
 // ignore: must_be_immutable
 class Onboarding extends StatefulWidget {
@@ -44,9 +46,17 @@ class _OnboardingState extends State<Onboarding> with TickerProviderStateMixin {
   bool remedies = true;
   bool newLevel = true;
 
+  String testResult = "Negative";
+
+  ScrollController controller1 = ScrollController();
+  ScrollController controller2 = ScrollController();
+  ScrollController controller3 = ScrollController();
+  ScrollController controller4 = ScrollController();
+
+
   @override
-  void initState(){
-    super.initState();
+  void didChangeDependencies(){
+    super.didChangeDependencies();
     user = ModalRoute.of(context).settings.arguments;
 
     myFocusNode.addListener(() {setState(() {});});
@@ -69,406 +79,93 @@ class _OnboardingState extends State<Onboarding> with TickerProviderStateMixin {
         body: Container(
           width: MediaQuery.of(context).size.width,
           color: bgColor,
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                appBar(context),
-                Center(
-                  child: Container(
-                    width: MediaQuery.of(context).size.width*0.5,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        SizedBox(height:30),
-                        Text('Welcome '+user.firstName,style: TextStyle(
-                          color: grey1,
-                          fontSize: 14
-                        ),),
-                        SizedBox(height:15),
-                        Text('A few more steps to go....',style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20
-                        ),),
-                        SizedBox(height: 10,),
-                        Center(
-                          child: TabBar(
-                            controller: tabController,
-                            tabs: [
-                              Tab(icon: Icon(Icons.note),text: "Personal",),
-                              Tab(icon: Icon(Icons.masks),text: "COVID-19 Questions",),
-                              Tab(icon: Icon(Icons.medical_services),text: "Remedy details",),
-                            ],
-                            labelColor: blue1,
-                            unselectedLabelColor: Colors.white,
+          child: SmoothScrollWeb(
+            controller: controller1,
+            child: SingleChildScrollView(
+              physics: NeverScrollableScrollPhysics(),
+              controller: controller1,
+              child: Column(
+                children: [
+                  appBar(context),
+                  Center(
+                    child: Container(
+                      width: MediaQuery.of(context).size.width*0.5,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          SizedBox(height:30),
+                          Text('Welcome '+user.firstName,style: TextStyle(
+                            color: grey1,
+                            fontSize: 14
+                          ),),
+                          SizedBox(height:15),
+                          Text('A few more steps to go....',style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20
+                          ),),
+                          SizedBox(height: 10,),
+                          Center(
+                            child: TabBar(
+                              controller: tabController,
+                              tabs: [
+                                Tab(icon: Icon(Icons.note),text: "Personal",),
+                                Tab(icon: Icon(Icons.masks),text: "COVID-19 Questions",),
+                                Tab(icon: Icon(Icons.medical_services),text: "Remedy details",),
+                              ],
+                              labelColor: blue1,
+                              unselectedLabelColor: Colors.white,
+                            ),
                           ),
-                        ),
-                        SizedBox(height:30),
-                        Container(
-                          width: MediaQuery.of(context).size.width*0.5,
-                          height:MediaQuery.of(context).size.height*0.6,
-                          child: TabBarView(
-                            controller: tabController,
-                            children: [
-                              Container(
-                                width: MediaQuery.of(context).size.width*0.5,
-                                child: SingleChildScrollView(
-                                  child: Column(
-                                    children: <Widget>[
-                                      Text("Personal Details".toUpperCase(),style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 25
-                                      ),),
-                                      SizedBox(height:30),
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: [
-                                          Container(
-                                            height: 58,
-                                            width: 180,
-                                            decoration: BoxDecoration(
-                                                color: grey2,
-                                                borderRadius: BorderRadius.circular(10)
-                                            ),
-                                            child: Center(
-                                              child: Padding(
-                                                padding: const EdgeInsets.only(left: 20),
-                                                child: TextFormField(
-                                                  controller: ageController,
-                                                  focusNode: myFocusNode,
-                                                  // autofillHints: [],
-                                                  inputFormatters: <TextInputFormatter>[
-                                                    FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
-                                                  ],
-                                                  keyboardType: TextInputType.number,
-                                                  style: TextStyle(color:Colors.white,fontSize: 14),
-                                                  decoration: InputDecoration(
-                                                    labelText: 'Age',
-                                                    // hintText: 'Email Address',
-                                                    labelStyle: TextStyle(
-                                                        color:myFocusNode.hasFocus? blue1:Colors.white,
-                                                        fontSize: 14,
-                                                    ),
-
-                                                    border:null,
-                                                    enabledBorder:  UnderlineInputBorder(borderSide:BorderSide(
-                                                        color: Color.fromRGBO(0,0,0,0)
-                                                    )),
-                                                    focusedBorder:  UnderlineInputBorder(borderSide:BorderSide(
-                                                        color: Color.fromRGBO(0,0,0,0)
-                                                    )),
-                                                  ),
+                          SizedBox(height:30),
+                          Container(
+                            width: MediaQuery.of(context).size.width*0.5,
+                            height:MediaQuery.of(context).size.height*0.6,
+                            child: TabBarView(
+                              controller: tabController,
+                              children: [
+                                Container(
+                                  width: MediaQuery.of(context).size.width*0.5,
+                                  child: SmoothScrollWeb(
+                                    controller: controller2,
+                                    child: SingleChildScrollView(
+                                      physics: NeverScrollableScrollPhysics(),
+                                      controller: controller2,
+                                      child: Column(
+                                        children: <Widget>[
+                                          Text("Personal Details".toUpperCase(),style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 25
+                                          ),),
+                                          SizedBox(height:30),
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              Container(
+                                                height: 58,
+                                                width: 180,
+                                                decoration: BoxDecoration(
+                                                    color: grey2,
+                                                    borderRadius: BorderRadius.circular(10)
                                                 ),
-                                              ),
-                                            ),
-                                          ),
-                                          SizedBox(width:20),
-                                          GenderDropDown()
-                                        ],
-                                      ),
-                                      SizedBox(height: 30,),
-                                      BackgroundDropDown(),
-                                      SizedBox(height:30),
-                                      Text("Health Conditions".toUpperCase(),style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 25
-                                      ),),
-                                      SizedBox(height:16),
-                                      Text("Do you have any existing health conditions",style:TextStyle(
-                                        color: grey3,
-                                        fontSize: 18
-                                      )),
-                                      SizedBox(height: 16,),
-                                      Container(
-                                        height: 140,
-                                        width: 380,
-                                        decoration: BoxDecoration(
-                                            color: grey2,
-                                            borderRadius: BorderRadius.circular(10)
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(left: 20, top: 5),
-                                          child: TextFormField(
-                                            maxLines: null,
-                                            controller: healthController,
-                                            focusNode: myFocusNode2,
-                                            textAlign: TextAlign.start,
-                                            // autofillHints: [],
-                                            keyboardType: TextInputType.number,
-                                            style: TextStyle(color:Colors.white,fontSize: 14),
-                                            decoration: InputDecoration(
-                                              labelText: 'Health Conditions',
-                                              // hintText: 'Email Address',
-                                              labelStyle: TextStyle(
-                                                color:myFocusNode2.hasFocus? blue1:Colors.white,
-                                                fontSize: 14,
-                                              ),
-
-                                              border:null,
-                                              enabledBorder:  UnderlineInputBorder(borderSide:BorderSide(
-                                                  color: Color.fromRGBO(0,0,0,0)
-                                              )),
-                                              focusedBorder:  UnderlineInputBorder(borderSide:BorderSide(
-                                                  color: Color.fromRGBO(0,0,0,0)
-                                              )),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(height:30),
-                                      Text("Medication".toUpperCase(),style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 25
-                                      ),),
-                                      SizedBox(height:16),
-                                      Text("Are you taking any medication?",style:TextStyle(
-                                        color: grey3,
-                                        fontSize: 18
-                                      )),
-                                      SizedBox(height: 16,),
-                                      Container(
-                                        height: 140,
-                                        width: 380,
-                                        decoration: BoxDecoration(
-                                            color: grey2,
-                                            borderRadius: BorderRadius.circular(10)
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(left: 20, top: 5),
-                                          child: TextFormField(
-                                            maxLines: null,
-                                            controller: medicationController,
-                                            focusNode: myFocusNode3,
-                                            textAlign: TextAlign.start,
-                                            // autofillHints: [],
-                                            keyboardType: TextInputType.number,
-                                            style: TextStyle(color:Colors.white,fontSize: 14),
-                                            decoration: InputDecoration(
-                                              labelText: 'Medication',
-                                              // hintText: 'Email Address',
-                                              labelStyle: TextStyle(
-                                                color:myFocusNode3.hasFocus? blue1:Colors.white,
-                                                fontSize: 14,
-                                              ),
-
-                                              border:null,
-                                              enabledBorder:  UnderlineInputBorder(borderSide:BorderSide(
-                                                  color: Color.fromRGBO(0,0,0,0)
-                                              )),
-                                              focusedBorder:  UnderlineInputBorder(borderSide:BorderSide(
-                                                  color: Color.fromRGBO(0,0,0,0)
-                                              )),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(height:30),
-                                      InkWell(
-                                        onTap: (){
-                                          tabController.animateTo(1);
-                                        },
-                                        child: Container(
-                                          height: 40,
-                                          width: 140,
-                                          decoration: BoxDecoration(
-                                              color:blue1,
-                                              borderRadius: BorderRadius.circular(30)
-                                          ),
-                                          child: Center(
-                                            child: Text("Next",style: TextStyle(
-                                                fontSize: 18
-                                            ),),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                width: MediaQuery.of(context).size.width*0.5,
-                                child: SingleChildScrollView(
-                                  child: Column(
-                                    children: <Widget>[
-                                      Text("Covid-19 Questions".toUpperCase(),style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 25
-                                      ),),
-                                      SizedBox(height:30),
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.end,
-                                        children: [
-                                          Text("Have you experience any symptoms for Covid-19?",style:TextStyle(
-                                            color:Colors.white,
-                                            fontSize: 18,
-                                          )),
-                                          SizedBox(width:10),
-                                          Container(
-                                            height:40,
-                                            width: 80,
-                                            child: CustomSwitch(
-                                              activeColor: blue1,
-                                              value: symptom,
-                                              onChanged: (v){
-                                                setState((){
-                                                  symptom = v;
-                                                });
-                                              },
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(height:30),
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.end,
-                                        children: [
-                                          Text("Have you tested for Covid-19?",style:TextStyle(
-                                            color:Colors.white,
-                                            fontSize: 18,
-                                          )),
-                                          SizedBox(width:10),
-                                          Container(
-                                            height:40,
-                                            width: 80,
-                                            child: CustomSwitch(
-                                              activeColor: blue1,
-                                              value: tested,
-                                              onChanged: (v){
-                                                setState((){
-                                                  tested = v;
-                                                });
-                                              },
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(height:30),
-                                    ]+ <Widget>[
-                                      AnimatedCrossFade(
-                                        duration:Duration(milliseconds:500),
-                                        crossFadeState: tested == false?CrossFadeState.showFirst:CrossFadeState.showSecond,
-                                        firstChild: Row(
-                                          mainAxisAlignment: MainAxisAlignment.end,
-                                          children: [
-                                            Text("Is the result positive or negative",style:TextStyle(
-                                              color:Colors.white,
-                                              fontSize: 18,
-                                            )),
-                                            SizedBox(width:10),
-                                            Container(
-                                              height:56,
-                                              decoration: BoxDecoration(
-                                                  color: grey2,
-                                                  borderRadius: BorderRadius.circular(10)      ),
-                                              width: 150 ,
-                                              child: Padding(
-                                                padding: const EdgeInsets.only(left: 8,top: 3),
-                                                child: DropdownButton<String>(
-                                                  isExpanded: true,
-                                                  value: testResult,
-                                                  icon: Icon(Icons.arrow_drop_down,color:Colors.white),
-                                                  iconSize: 24,
-                                                  elevation: 16,
-                                                  style: TextStyle(
-                                                    color:Colors.white,
-                                                  ),
-                                                  underline: Container(
-
-                                                  ),
-                                                  onChanged: (String newValue) {
-                                                    setState(() {
-                                                      testResult = newValue;
-                                                      print(testResult);
-                                                    });
-                                                  },
-                                                  dropdownColor: grey2,
-                                                  items: ['Choose','Negative','Positive']
-                                                      .map<DropdownMenuItem<String>>((String value) {
-                                                    return DropdownMenuItem<String>(
-                                                      value: value,
-                                                      child: Text(value,style:TextStyle(
-                                                        color:Colors.white,
-                                                      )),
-                                                    );
-                                                  }).toList(),
-                                                ),
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                        secondChild: Container(),
-                                      ),
-                                      SizedBox(height:30),
-                                    ]+<Widget>[
-                                      AnimatedCrossFade(
-                                        duration: Duration(milliseconds: 500),
-                                        crossFadeState: testResult=='Positive'?CrossFadeState.showFirst:CrossFadeState.showSecond,
-                                        firstChild: Container(
-                                          child: Column(
-                                            children: <Widget>[
-                                              Row(
-                                                mainAxisAlignment: MainAxisAlignment.end,
-                                                children: [
-                                                  Text("Have you received any treatments?",style:TextStyle(
-                                                    color:Colors.white,
-                                                    fontSize: 18,
-                                                  )),
-                                                  SizedBox(width:10),
-                                                  Container(
-                                                    height:40,
-                                                    width: 80,
-                                                    child: CustomSwitch(
-                                                      activeColor: blue1,
-                                                      value: treatment,
-                                                      onChanged: (v){
-                                                        setState((){
-                                                          treatment = v;
-                                                        });
-                                                      },
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              SizedBox(height:30),
-                                            ],
-                                          )
-                                        ),
-                                        secondChild: Container(),
-                                      )
-                                    ]+<Widget>[
-                                      AnimatedCrossFade(
-                                        duration:Duration(milliseconds: 500),
-                                        crossFadeState: treatment==false?CrossFadeState.showFirst:CrossFadeState.showSecond,
-                                        firstChild:Container(
-                                          child: Column(
-                                            children:<Widget>[
-                                              Center(
-                                                child: Container(
-                                                  height: 140,
-                                                  width: MediaQuery.of(context).size.width*0.5,
-                                                  decoration: BoxDecoration(
-                                                      color: grey2,
-                                                      borderRadius: BorderRadius.circular(10)
-                                                  ),
+                                                child: Center(
                                                   child: Padding(
-                                                    padding: const EdgeInsets.only(left: 20, top: 5),
+                                                    padding: const EdgeInsets.only(left: 20),
                                                     child: TextFormField(
-                                                      maxLines: null,
-                                                      controller: treatmentController,
-                                                      focusNode: myFocusNode4,
-                                                      textAlign: TextAlign.start,
+                                                      controller: ageController,
+                                                      focusNode: myFocusNode,
                                                       // autofillHints: [],
+                                                      inputFormatters: <TextInputFormatter>[
+                                                        FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                                                      ],
                                                       keyboardType: TextInputType.number,
                                                       style: TextStyle(color:Colors.white,fontSize: 14),
                                                       decoration: InputDecoration(
-                                                        labelText: 'Treatment',
+                                                        labelText: 'Age',
                                                         // hintText: 'Email Address',
                                                         labelStyle: TextStyle(
-                                                          color:myFocusNode4.hasFocus? blue1:Colors.white,
-                                                          fontSize: 14,
+                                                            color:myFocusNode.hasFocus? blue1:Colors.white,
+                                                            fontSize: 14,
                                                         ),
 
                                                         border:null,
@@ -483,182 +180,142 @@ class _OnboardingState extends State<Onboarding> with TickerProviderStateMixin {
                                                   ),
                                                 ),
                                               ),
-                                              SizedBox(height:30),
-                                              Row(
-                                                mainAxisAlignment: MainAxisAlignment.end,
-                                                children: [
-                                                  Text("Have you recovered from Covid-19?",style:TextStyle(
-                                                    color:Colors.white,
-                                                    fontSize: 18,
-                                                  )),
-                                                  SizedBox(width:10),
-                                                  Container(
-                                                    height:40,
-                                                    width: 80,
-                                                    child: CustomSwitch(
-                                                      activeColor: blue1,
-                                                      value: recovered,
-                                                      onChanged: (v){
-                                                        setState((){
-                                                          recovered = v;
-                                                        });
-                                                      },
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              SizedBox(height:30),
-                                            ]
-                                          ),
-                                        ),
-                                        secondChild: Container(),
-                                      )
-                                    ]+<Widget>[
-                                      AnimatedCrossFade(
-                                        duration: Duration(milliseconds: 500),
-                                        crossFadeState: recovered==false?CrossFadeState.showFirst:CrossFadeState.showSecond,
-                                        firstChild: Container(
-                                          child: Column(
-                                            children: <Widget>[
-                                              Row(
-                                                mainAxisAlignment: MainAxisAlignment.end,
-                                                children: [
-                                                  Text("Are you experiencing any long term health impacts?",style:TextStyle(
-                                                    color:Colors.white,
-                                                    fontSize: 18,
-                                                  )),
-                                                  SizedBox(width:10),
-                                                  Container(
-                                                    height:40,
-                                                    width: 80,
-                                                    child: CustomSwitch(
-                                                      activeColor: blue1,
-                                                      value: longTerm,
-                                                      onChanged: (v){
-                                                        setState((){
-                                                          longTerm = v;
-                                                        });
-                                                      },
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              SizedBox(height:30)
+                                              SizedBox(width:20),
+                                              GenderDropDown()
                                             ],
                                           ),
-                                        ),
-                                        secondChild: Container(),
-                                      )
-                                    ]+<Widget>[
-                                      AnimatedCrossFade(
-                                        duration:Duration(milliseconds: 500),
-                                        crossFadeState: longTerm==false?CrossFadeState.showFirst:CrossFadeState.showSecond,
-                                        firstChild:Container(
-                                          child: Column(
-                                              children:<Widget>[
-                                                Center(
-                                                  child: SymptomDropDown(),
-                                                  // child: Container(
-                                                  //   height: 140,
-                                                  //   width: MediaQuery.of(context).size.width*0.5,
-                                                  //   decoration: BoxDecoration(
-                                                  //       color: grey2,
-                                                  //       borderRadius: BorderRadius.circular(10)
-                                                  //   ),
-                                                  //   child: Padding(
-                                                  //     padding: const EdgeInsets.only(left: 20, top: 5),
-                                                  //     child: TextFormField(
-                                                  //       maxLines: null,
-                                                  //       controller: symptomController,
-                                                  //       focusNode: myFocusNode5,
-                                                  //       textAlign: TextAlign.start,
-                                                  //       // autofillHints: [],
-                                                  //       keyboardType: TextInputType.text,
-                                                  //       style: TextStyle(color:Colors.white,fontSize: 14),
-                                                  //       decoration: InputDecoration(
-                                                  //         labelText: 'Symptoms',
-                                                  //         // hintText: 'Email Address',
-                                                  //         labelStyle: TextStyle(
-                                                  //           color:myFocusNode5.hasFocus? blue1:Colors.white,
-                                                  //           fontSize: 14,
-                                                  //         ),
-                                                  //
-                                                  //         border:null,
-                                                  //         enabledBorder:  UnderlineInputBorder(borderSide:BorderSide(
-                                                  //             color: Color.fromRGBO(0,0,0,0)
-                                                  //         )),
-                                                  //         focusedBorder:  UnderlineInputBorder(borderSide:BorderSide(
-                                                  //             color: Color.fromRGBO(0,0,0,0)
-                                                  //         )),
-                                                  //       ),
-                                                  //     ),
-                                                  //   ),
-                                                  // ),
+                                          SizedBox(height: 30,),
+                                          BackgroundDropDown(),
+                                          SizedBox(height:30),
+                                          Text("Health Conditions".toUpperCase(),style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 25
+                                          ),),
+                                          SizedBox(height:16),
+                                          Text("Do you have any existing health conditions",style:TextStyle(
+                                            color: grey3,
+                                            fontSize: 18
+                                          )),
+                                          SizedBox(height: 16,),
+                                          Container(
+                                            height: 140,
+                                            width: 380,
+                                            decoration: BoxDecoration(
+                                                color: grey2,
+                                                borderRadius: BorderRadius.circular(10)
+                                            ),
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(left: 20, top: 5),
+                                              child: TextFormField(
+                                                maxLines: null,
+                                                controller: healthController,
+                                                focusNode: myFocusNode2,
+                                                textAlign: TextAlign.start,
+                                                // autofillHints: [],
+                                                keyboardType: TextInputType.number,
+                                                style: TextStyle(color:Colors.white,fontSize: 14),
+                                                decoration: InputDecoration(
+                                                  labelText: 'Health Conditions',
+                                                  // hintText: 'Email Address',
+                                                  labelStyle: TextStyle(
+                                                    color:myFocusNode2.hasFocus? blue1:Colors.white,
+                                                    fontSize: 14,
+                                                  ),
+
+                                                  border:null,
+                                                  enabledBorder:  UnderlineInputBorder(borderSide:BorderSide(
+                                                      color: Color.fromRGBO(0,0,0,0)
+                                                  )),
+                                                  focusedBorder:  UnderlineInputBorder(borderSide:BorderSide(
+                                                      color: Color.fromRGBO(0,0,0,0)
+                                                  )),
                                                 ),
-                                                SizedBox(height:30),
-                                                Row(
-                                                  mainAxisAlignment: MainAxisAlignment.end,
-                                                  children: [
-                                                    Container(
-                                                      width:MediaQuery.of(context).size.width*0.5-100,
-                                                      child: Text("On a 10-point scale (0 - no pain, 10 - very painful), please indicate the level of pain. Put 0 if not applicable.",style:TextStyle(
-                                                        color:Colors.white,
-                                                        fontSize: 18,
-                                                      ),maxLines: null,),
-                                                    ),
-                                                    SizedBox(width:10),
-                                                    PainDropDown()
-                                                  ],
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(height:30),
+                                          Text("Medication".toUpperCase(),style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 25
+                                          ),),
+                                          SizedBox(height:16),
+                                          Text("Are you taking any medication?",style:TextStyle(
+                                            color: grey3,
+                                            fontSize: 18
+                                          )),
+                                          SizedBox(height: 16,),
+                                          Container(
+                                            height: 140,
+                                            width: 380,
+                                            decoration: BoxDecoration(
+                                                color: grey2,
+                                                borderRadius: BorderRadius.circular(10)
+                                            ),
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(left: 20, top: 5),
+                                              child: TextFormField(
+                                                maxLines: null,
+                                                controller: medicationController,
+                                                focusNode: myFocusNode3,
+                                                textAlign: TextAlign.start,
+                                                // autofillHints: [],
+                                                keyboardType: TextInputType.number,
+                                                style: TextStyle(color:Colors.white,fontSize: 14),
+                                                decoration: InputDecoration(
+                                                  labelText: 'Medication',
+                                                  // hintText: 'Email Address',
+                                                  labelStyle: TextStyle(
+                                                    color:myFocusNode3.hasFocus? blue1:Colors.white,
+                                                    fontSize: 14,
+                                                  ),
+
+                                                  border:null,
+                                                  enabledBorder:  UnderlineInputBorder(borderSide:BorderSide(
+                                                      color: Color.fromRGBO(0,0,0,0)
+                                                  )),
+                                                  focusedBorder:  UnderlineInputBorder(borderSide:BorderSide(
+                                                      color: Color.fromRGBO(0,0,0,0)
+                                                  )),
                                                 ),
-                                                SizedBox(height:30),
-                                                Row(
-                                                  mainAxisAlignment: MainAxisAlignment.end,
-                                                  children: [
-                                                    Container(
-                                                      width:MediaQuery.of(context).size.width*0.5-100,
-                                                      child: Text("On a 10-point scale (0 - never happened, 10 - never stopped), please indicate the frequency of the symptom. Put 0 if not applicable.",style:TextStyle(
-                                                        color:Colors.white,
-                                                        fontSize: 18,
-                                                      ),maxLines: null,),
-                                                    ),
-                                                    SizedBox(width:10),
-                                                    FrequencyDropDown()
-                                                  ],
-                                                ),
-                                                SizedBox(height:30),
-                                              ]
+                                              ),
+                                            ),
                                           ),
-                                        ),
-                                        secondChild: Container(),
-                                      )
-                                    ]+<Widget>[
-                                      InkWell(
-                                        onTap: (){
-                                          tabController.animateTo(2);
-                                        },
-                                        child: Container(
-                                          height: 40,
-                                          width: 140,
-                                          decoration: BoxDecoration(
-                                              color:blue1,
-                                              borderRadius: BorderRadius.circular(30)
+                                          SizedBox(height:30),
+                                          InkWell(
+                                            onTap: (){
+                                              tabController.animateTo(1);
+                                            },
+                                            child: Container(
+                                              height: 40,
+                                              width: 140,
+                                              decoration: BoxDecoration(
+                                                  color:blue1,
+                                                  borderRadius: BorderRadius.circular(30)
+                                              ),
+                                              child: Center(
+                                                child: Text("Next",style: TextStyle(
+                                                    fontSize: 18
+                                                ),),
+                                              ),
+                                            ),
                                           ),
-                                          child: Center(
-                                            child: Text("Next",style: TextStyle(
-                                                fontSize: 18
-                                            ),),
-                                          ),
-                                        ),
+                                        ],
                                       ),
-                                    ],
+                                    ),
                                   ),
                                 ),
-                              ),
-                              Container(
-                                  child:SingleChildScrollView(
-                                      child:Column(
+                                Container(
+                                  width: MediaQuery.of(context).size.width*0.5,
+                                  child: SmoothScrollWeb(
+                                    controller: controller3,
+                                    child: SingleChildScrollView(
+                                      physics: NeverScrollableScrollPhysics(),
+                                      controller: controller3,
+                                      child: Column(
                                         children: <Widget>[
-                                          Text("Remedy Details".toUpperCase(),style: TextStyle(
+                                          Text("Covid-19 Questions".toUpperCase(),style: TextStyle(
                                               color: Colors.white,
                                               fontWeight: FontWeight.bold,
                                               fontSize: 25
@@ -667,23 +324,20 @@ class _OnboardingState extends State<Onboarding> with TickerProviderStateMixin {
                                           Row(
                                             mainAxisAlignment: MainAxisAlignment.end,
                                             children: [
-                                              Container(
-                                                width:MediaQuery.of(context).size.width*0.5-100,
-                                                child: Text("Are you taking any remedies that are not prescribed by doctors?",style:TextStyle(
-                                                  color:Colors.white,
-                                                  fontSize: 18,
-                                                ),maxLines: null,),
-                                              ),
+                                              Text("Have you experience any symptoms for Covid-19?",style:TextStyle(
+                                                color:Colors.white,
+                                                fontSize: 18,
+                                              )),
                                               SizedBox(width:10),
                                               Container(
                                                 height:40,
                                                 width: 80,
                                                 child: CustomSwitch(
                                                   activeColor: blue1,
-                                                  value: remedies,
+                                                  value: symptom,
                                                   onChanged: (v){
                                                     setState((){
-                                                      remedies = v;
+                                                      symptom = v;
                                                     });
                                                   },
                                                 ),
@@ -691,150 +345,152 @@ class _OnboardingState extends State<Onboarding> with TickerProviderStateMixin {
                                             ],
                                           ),
                                           SizedBox(height:30),
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.end,
+                                            children: [
+                                              Text("Have you tested for Covid-19?",style:TextStyle(
+                                                color:Colors.white,
+                                                fontSize: 18,
+                                              )),
+                                              SizedBox(width:10),
+                                              Container(
+                                                height:40,
+                                                width: 80,
+                                                child: CustomSwitch(
+                                                  activeColor: blue1,
+                                                  value: tested,
+                                                  onChanged: (v){
+                                                    setState((){
+                                                      tested = v;
+                                                    });
+                                                  },
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(height:30),
+                                        ]+ <Widget>[
+                                          AnimatedCrossFade(
+                                            duration:Duration(milliseconds:500),
+                                            crossFadeState: tested == false?CrossFadeState.showFirst:CrossFadeState.showSecond,
+                                            firstChild: Row(
+                                              mainAxisAlignment: MainAxisAlignment.end,
+                                              children: [
+                                                Text("Is the result positive or negative",style:TextStyle(
+                                                  color:Colors.white,
+                                                  fontSize: 18,
+                                                )),
+                                                SizedBox(width:10),
+                                                Container(
+                                                  height:56,
+                                                  decoration: BoxDecoration(
+                                                      color: grey2,
+                                                      borderRadius: BorderRadius.circular(10)      ),
+                                                  width: 150 ,
+                                                  child: Padding(
+                                                    padding: const EdgeInsets.only(left: 8,top: 3),
+                                                    child: DropdownButton<String>(
+                                                      isExpanded: true,
+                                                      value: testResult,
+                                                      icon: Icon(Icons.arrow_drop_down,color:Colors.white),
+                                                      iconSize: 24,
+                                                      elevation: 16,
+                                                      style: TextStyle(
+                                                        color:Colors.white,
+                                                      ),
+                                                      underline: Container(
+
+                                                      ),
+                                                      onChanged: (String newValue) {
+                                                        setState(() {
+                                                          testResult = newValue;
+                                                          print(testResult);
+                                                        });
+                                                      },
+                                                      dropdownColor: grey2,
+                                                      items: ['Negative','Positive']
+                                                          .map<DropdownMenuItem<String>>((String value) {
+                                                        return DropdownMenuItem<String>(
+                                                          value: value,
+                                                          child: Text(value,style:TextStyle(
+                                                            color:Colors.white,
+                                                          )),
+                                                        );
+                                                      }).toList(),
+                                                    ),
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                            secondChild: Container(),
+                                          ),
+                                          SizedBox(height:30),
                                         ]+<Widget>[
                                           AnimatedCrossFade(
                                             duration: Duration(milliseconds: 500),
-                                            crossFadeState: remedies==false?CrossFadeState.showFirst:CrossFadeState.showSecond,
-                                            firstChild:Container(
-                                              child:Column(
+                                            crossFadeState: testResult=='Positive'?CrossFadeState.showFirst:CrossFadeState.showSecond,
+                                            firstChild: Container(
+                                              child: Column(
                                                 children: <Widget>[
-                                                  Container(
-                                                    height: 58,
-                                                    width: MediaQuery.of(context).size.width*0.5,
-                                                    decoration: BoxDecoration(
-                                                        color: grey2,
-                                                        borderRadius: BorderRadius.circular(10)
-                                                    ),
-                                                    child: Center(
-                                                      child: Padding(
-                                                        padding: const EdgeInsets.only(left: 15),
-                                                        child: TextFormField(
-                                                          controller: remedyController,
-                                                          focusNode: myFocusNode6,
-                                                          // autofillHints: [],
-                                                          keyboardType: TextInputType.number,
-                                                          style: TextStyle(color:Colors.white,fontSize: 14),
-                                                          decoration: InputDecoration(
-                                                            labelText: 'Name of the Remedy',
-                                                            // hintText: 'Email Address',
-                                                            labelStyle: TextStyle(
-                                                              color:myFocusNode6.hasFocus? blue1:Colors.white,
-                                                              fontSize: 14,
-                                                            ),
-
-                                                            border:null,
-                                                            enabledBorder:  UnderlineInputBorder(borderSide:BorderSide(
-                                                                color: Color.fromRGBO(0,0,0,0)
-                                                            )),
-                                                            focusedBorder:  UnderlineInputBorder(borderSide:BorderSide(
-                                                                color: Color.fromRGBO(0,0,0,0)
-                                                            )),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  SizedBox(height:30),
                                                   Row(
-                                                    mainAxisAlignment: MainAxisAlignment.center,
+                                                    mainAxisAlignment: MainAxisAlignment.end,
                                                     children: [
+                                                      Text("Have you received any treatments?",style:TextStyle(
+                                                        color:Colors.white,
+                                                        fontSize: 18,
+                                                      )),
+                                                      SizedBox(width:10),
                                                       Container(
-                                                        height: 58,
-                                                        width: MediaQuery.of(context).size.width*0.23,
-                                                        decoration: BoxDecoration(
-                                                            color: grey2,
-                                                            borderRadius: BorderRadius.circular(10)
-                                                        ),
-                                                        child: Center(
-                                                          child: Padding(
-                                                            padding: const EdgeInsets.only(left: 15),
-                                                            child: TextFormField(
-                                                              controller: remedyAmountController,
-                                                              focusNode: myFocusNode7,
-                                                              // autofillHints: [],
-                                                              keyboardType: TextInputType.number,
-                                                              style: TextStyle(color:Colors.white,fontSize: 14),
-                                                              decoration: InputDecoration(
-                                                                labelText: 'Amount',
-                                                                // hintText: 'Email Address',
-                                                                labelStyle: TextStyle(
-                                                                  color:myFocusNode7.hasFocus? blue1:Colors.white,
-                                                                  fontSize: 14,
-                                                                ),
-
-                                                                border:null,
-                                                                enabledBorder:  UnderlineInputBorder(borderSide:BorderSide(
-                                                                    color: Color.fromRGBO(0,0,0,0)
-                                                                )),
-                                                                focusedBorder:  UnderlineInputBorder(borderSide:BorderSide(
-                                                                    color: Color.fromRGBO(0,0,0,0)
-                                                                )),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      SizedBox(width: MediaQuery.of(context).size.width*0.04,),
-                                                      Container(
-                                                        height: 58,
-                                                        width: MediaQuery.of(context).size.width*0.23,
-                                                        decoration: BoxDecoration(
-                                                            color: grey2,
-                                                            borderRadius: BorderRadius.circular(10)
-                                                        ),
-                                                        child: Center(
-                                                          child: Padding(
-                                                            padding: const EdgeInsets.only(left: 15),
-                                                            child: TextFormField(
-                                                              controller: remedyFrequencyController,
-                                                              focusNode: myFocusNode8,
-                                                              // autofillHints: [],
-                                                              keyboardType: TextInputType.number,
-                                                              style: TextStyle(color:Colors.white,fontSize: 14),
-                                                              decoration: InputDecoration(
-                                                                labelText: 'Frequency',
-                                                                // hintText: 'Email Address',
-                                                                labelStyle: TextStyle(
-                                                                  color:myFocusNode8.hasFocus? blue1:Colors.white,
-                                                                  fontSize: 14,
-                                                                ),
-
-                                                                border:null,
-                                                                enabledBorder:  UnderlineInputBorder(borderSide:BorderSide(
-                                                                    color: Color.fromRGBO(0,0,0,0)
-                                                                )),
-                                                                focusedBorder:  UnderlineInputBorder(borderSide:BorderSide(
-                                                                    color: Color.fromRGBO(0,0,0,0)
-                                                                )),
-                                                              ),
-                                                            ),
-                                                          ),
+                                                        height:40,
+                                                        width: 80,
+                                                        child: CustomSwitch(
+                                                          activeColor: blue1,
+                                                          value: treatment,
+                                                          onChanged: (v){
+                                                            setState((){
+                                                              treatment = v;
+                                                            });
+                                                          },
                                                         ),
                                                       ),
                                                     ],
                                                   ),
                                                   SizedBox(height:30),
-                                                  Container(
-                                                    height: 58,
-                                                    width: MediaQuery.of(context).size.width*0.5,
-                                                    decoration: BoxDecoration(
-                                                        color: grey2,
-                                                        borderRadius: BorderRadius.circular(10)
-                                                    ),
-                                                    child: Center(
+                                                ],
+                                              )
+                                            ),
+                                            secondChild: Container(),
+                                          )
+                                        ]+<Widget>[
+                                          AnimatedCrossFade(
+                                            duration:Duration(milliseconds: 500),
+                                            crossFadeState: treatment==false?CrossFadeState.showFirst:CrossFadeState.showSecond,
+                                            firstChild:Container(
+                                              child: Column(
+                                                children:<Widget>[
+                                                  Center(
+                                                    child: Container(
+                                                      height: 140,
+                                                      width: MediaQuery.of(context).size.width*0.5,
+                                                      decoration: BoxDecoration(
+                                                          color: grey2,
+                                                          borderRadius: BorderRadius.circular(10)
+                                                      ),
                                                       child: Padding(
-                                                        padding: const EdgeInsets.only(left: 15),
+                                                        padding: const EdgeInsets.only(left: 20, top: 5),
                                                         child: TextFormField(
-                                                          controller: remedySymptomController,
-                                                          focusNode: myFocusNode9,
+                                                          maxLines: null,
+                                                          controller: treatmentController,
+                                                          focusNode: myFocusNode4,
+                                                          textAlign: TextAlign.start,
                                                           // autofillHints: [],
                                                           keyboardType: TextInputType.number,
                                                           style: TextStyle(color:Colors.white,fontSize: 14),
                                                           decoration: InputDecoration(
-                                                            labelText: 'Corresponding Symptom',
+                                                            labelText: 'Treatment',
                                                             // hintText: 'Email Address',
                                                             labelStyle: TextStyle(
-                                                              color:myFocusNode9.hasFocus? blue1:Colors.white,
+                                                              color:myFocusNode4.hasFocus? blue1:Colors.white,
                                                               fontSize: 14,
                                                             ),
 
@@ -854,23 +510,20 @@ class _OnboardingState extends State<Onboarding> with TickerProviderStateMixin {
                                                   Row(
                                                     mainAxisAlignment: MainAxisAlignment.end,
                                                     children: [
-                                                      Container(
-                                                        width:MediaQuery.of(context).size.width*0.5-100,
-                                                        child: Text("Did the level of pain or frequency of your symptom changed after taking this remedy?",style:TextStyle(
-                                                          color:Colors.white,
-                                                          fontSize: 18,
-                                                        ),maxLines: null,),
-                                                      ),
+                                                      Text("Have you recovered from Covid-19?",style:TextStyle(
+                                                        color:Colors.white,
+                                                        fontSize: 18,
+                                                      )),
                                                       SizedBox(width:10),
                                                       Container(
                                                         height:40,
                                                         width: 80,
                                                         child: CustomSwitch(
                                                           activeColor: blue1,
-                                                          value: newLevel,
+                                                          value: recovered,
                                                           onChanged: (v){
                                                             setState((){
-                                                              newLevel = v;
+                                                              recovered = v;
                                                             });
                                                           },
                                                         ),
@@ -878,18 +531,94 @@ class _OnboardingState extends State<Onboarding> with TickerProviderStateMixin {
                                                     ],
                                                   ),
                                                   SizedBox(height:30),
+                                                ]
+                                              ),
+                                            ),
+                                            secondChild: Container(),
+                                          )
+                                        ]+<Widget>[
+                                          AnimatedCrossFade(
+                                            duration: Duration(milliseconds: 500),
+                                            crossFadeState: recovered==false?CrossFadeState.showFirst:CrossFadeState.showSecond,
+                                            firstChild: Container(
+                                              child: Column(
+                                                children: <Widget>[
+                                                  Row(
+                                                    mainAxisAlignment: MainAxisAlignment.end,
+                                                    children: [
+                                                      Text("Are you experiencing any long term health impacts?",style:TextStyle(
+                                                        color:Colors.white,
+                                                        fontSize: 18,
+                                                      )),
+                                                      SizedBox(width:10),
+                                                      Container(
+                                                        height:40,
+                                                        width: 80,
+                                                        child: CustomSwitch(
+                                                          activeColor: blue1,
+                                                          value: longTerm,
+                                                          onChanged: (v){
+                                                            setState((){
+                                                              longTerm = v;
+                                                            });
+                                                          },
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  SizedBox(height:30)
                                                 ],
-                                              )
+                                              ),
                                             ),
                                             secondChild: Container(),
                                           )
                                         ]+<Widget>[
                                           AnimatedCrossFade(
                                             duration:Duration(milliseconds: 500),
-                                            crossFadeState: newLevel==false?CrossFadeState.showFirst:CrossFadeState.showSecond,
+                                            crossFadeState: longTerm==false?CrossFadeState.showFirst:CrossFadeState.showSecond,
                                             firstChild:Container(
                                               child: Column(
                                                   children:<Widget>[
+                                                    Center(
+                                                      child: SymptomDropDown(),
+                                                      // child: Container(
+                                                      //   height: 140,
+                                                      //   width: MediaQuery.of(context).size.width*0.5,
+                                                      //   decoration: BoxDecoration(
+                                                      //       color: grey2,
+                                                      //       borderRadius: BorderRadius.circular(10)
+                                                      //   ),
+                                                      //   child: Padding(
+                                                      //     padding: const EdgeInsets.only(left: 20, top: 5),
+                                                      //     child: TextFormField(
+                                                      //       maxLines: null,
+                                                      //       controller: symptomController,
+                                                      //       focusNode: myFocusNode5,
+                                                      //       textAlign: TextAlign.start,
+                                                      //       // autofillHints: [],
+                                                      //       keyboardType: TextInputType.text,
+                                                      //       style: TextStyle(color:Colors.white,fontSize: 14),
+                                                      //       decoration: InputDecoration(
+                                                      //         labelText: 'Symptoms',
+                                                      //         // hintText: 'Email Address',
+                                                      //         labelStyle: TextStyle(
+                                                      //           color:myFocusNode5.hasFocus? blue1:Colors.white,
+                                                      //           fontSize: 14,
+                                                      //         ),
+                                                      //
+                                                      //         border:null,
+                                                      //         enabledBorder:  UnderlineInputBorder(borderSide:BorderSide(
+                                                      //             color: Color.fromRGBO(0,0,0,0)
+                                                      //         )),
+                                                      //         focusedBorder:  UnderlineInputBorder(borderSide:BorderSide(
+                                                      //             color: Color.fromRGBO(0,0,0,0)
+                                                      //         )),
+                                                      //       ),
+                                                      //     ),
+                                                      //   ),
+                                                      // ),
+                                                    ),
+                                                    SizedBox(height:30),
                                                     Row(
                                                       mainAxisAlignment: MainAxisAlignment.end,
                                                       children: [
@@ -901,7 +630,7 @@ class _OnboardingState extends State<Onboarding> with TickerProviderStateMixin {
                                                           ),maxLines: null,),
                                                         ),
                                                         SizedBox(width:10),
-                                                        Pain2DropDown()
+                                                        PainDropDown()
                                                       ],
                                                     ),
                                                     SizedBox(height:30),
@@ -916,7 +645,7 @@ class _OnboardingState extends State<Onboarding> with TickerProviderStateMixin {
                                                           ),maxLines: null,),
                                                         ),
                                                         SizedBox(width:10),
-                                                        Frequency2DropDown()
+                                                        FrequencyDropDown()
                                                       ],
                                                     ),
                                                     SizedBox(height:30),
@@ -924,12 +653,11 @@ class _OnboardingState extends State<Onboarding> with TickerProviderStateMixin {
                                               ),
                                             ),
                                             secondChild: Container(),
-                                          ),
-                                          SizedBox(height:30)
+                                          )
                                         ]+<Widget>[
                                           InkWell(
                                             onTap: (){
-                                              Navigator.pushNamed(context, generalHomeRoute,arguments: user);
+                                              tabController.animateTo(2);
                                             },
                                             child: Container(
                                               height: 40,
@@ -939,27 +667,337 @@ class _OnboardingState extends State<Onboarding> with TickerProviderStateMixin {
                                                   borderRadius: BorderRadius.circular(30)
                                               ),
                                               child: Center(
-                                                child: Text("Submit",style: TextStyle(
+                                                child: Text("Next",style: TextStyle(
                                                     fontSize: 18
                                                 ),),
                                               ),
                                             ),
                                           ),
                                         ],
-                                      )
-                                  )
-                              )
-                            ],
-                          ),
-                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                    child:SmoothScrollWeb(
+                                      controller: controller4,
+                                      child: SingleChildScrollView(
+                                          physics: NeverScrollableScrollPhysics(),
+                                          controller: controller4,
+                                          child:Column(
+                                            children: <Widget>[
+                                              Text("Remedy Details".toUpperCase(),style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 25
+                                              ),),
+                                              SizedBox(height:30),
+                                              Row(
+                                                mainAxisAlignment: MainAxisAlignment.end,
+                                                children: [
+                                                  Container(
+                                                    width:MediaQuery.of(context).size.width*0.5-100,
+                                                    child: Text("Are you taking any remedies that are not prescribed by doctors?",style:TextStyle(
+                                                      color:Colors.white,
+                                                      fontSize: 18,
+                                                    ),maxLines: null,),
+                                                  ),
+                                                  SizedBox(width:10),
+                                                  Container(
+                                                    height:40,
+                                                    width: 80,
+                                                    child: CustomSwitch(
+                                                      activeColor: blue1,
+                                                      value: remedies,
+                                                      onChanged: (v){
+                                                        setState((){
+                                                          remedies = v;
+                                                        });
+                                                      },
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              SizedBox(height:30),
+                                            ]+<Widget>[
+                                              AnimatedCrossFade(
+                                                duration: Duration(milliseconds: 500),
+                                                crossFadeState: remedies==false?CrossFadeState.showFirst:CrossFadeState.showSecond,
+                                                firstChild:Container(
+                                                  child:Column(
+                                                    children: <Widget>[
+                                                      Container(
+                                                        height: 58,
+                                                        width: MediaQuery.of(context).size.width*0.5,
+                                                        decoration: BoxDecoration(
+                                                            color: grey2,
+                                                            borderRadius: BorderRadius.circular(10)
+                                                        ),
+                                                        child: Center(
+                                                          child: Padding(
+                                                            padding: const EdgeInsets.only(left: 15),
+                                                            child: TextFormField(
+                                                              controller: remedyController,
+                                                              focusNode: myFocusNode6,
+                                                              // autofillHints: [],
+                                                              keyboardType: TextInputType.number,
+                                                              style: TextStyle(color:Colors.white,fontSize: 14),
+                                                              decoration: InputDecoration(
+                                                                labelText: 'Name of the Remedy',
+                                                                // hintText: 'Email Address',
+                                                                labelStyle: TextStyle(
+                                                                  color:myFocusNode6.hasFocus? blue1:Colors.white,
+                                                                  fontSize: 14,
+                                                                ),
 
-                      ],
+                                                                border:null,
+                                                                enabledBorder:  UnderlineInputBorder(borderSide:BorderSide(
+                                                                    color: Color.fromRGBO(0,0,0,0)
+                                                                )),
+                                                                focusedBorder:  UnderlineInputBorder(borderSide:BorderSide(
+                                                                    color: Color.fromRGBO(0,0,0,0)
+                                                                )),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      SizedBox(height:30),
+                                                      Row(
+                                                        mainAxisAlignment: MainAxisAlignment.center,
+                                                        children: [
+                                                          Container(
+                                                            height: 58,
+                                                            width: MediaQuery.of(context).size.width*0.23,
+                                                            decoration: BoxDecoration(
+                                                                color: grey2,
+                                                                borderRadius: BorderRadius.circular(10)
+                                                            ),
+                                                            child: Center(
+                                                              child: Padding(
+                                                                padding: const EdgeInsets.only(left: 15),
+                                                                child: TextFormField(
+                                                                  controller: remedyAmountController,
+                                                                  focusNode: myFocusNode7,
+                                                                  // autofillHints: [],
+                                                                  keyboardType: TextInputType.number,
+                                                                  style: TextStyle(color:Colors.white,fontSize: 14),
+                                                                  decoration: InputDecoration(
+                                                                    labelText: 'Amount',
+                                                                    // hintText: 'Email Address',
+                                                                    labelStyle: TextStyle(
+                                                                      color:myFocusNode7.hasFocus? blue1:Colors.white,
+                                                                      fontSize: 14,
+                                                                    ),
+
+                                                                    border:null,
+                                                                    enabledBorder:  UnderlineInputBorder(borderSide:BorderSide(
+                                                                        color: Color.fromRGBO(0,0,0,0)
+                                                                    )),
+                                                                    focusedBorder:  UnderlineInputBorder(borderSide:BorderSide(
+                                                                        color: Color.fromRGBO(0,0,0,0)
+                                                                    )),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          SizedBox(width: MediaQuery.of(context).size.width*0.04,),
+                                                          Container(
+                                                            height: 58,
+                                                            width: MediaQuery.of(context).size.width*0.23,
+                                                            decoration: BoxDecoration(
+                                                                color: grey2,
+                                                                borderRadius: BorderRadius.circular(10)
+                                                            ),
+                                                            child: Center(
+                                                              child: Padding(
+                                                                padding: const EdgeInsets.only(left: 15),
+                                                                child: TextFormField(
+                                                                  controller: remedyFrequencyController,
+                                                                  focusNode: myFocusNode8,
+                                                                  // autofillHints: [],
+                                                                  keyboardType: TextInputType.number,
+                                                                  style: TextStyle(color:Colors.white,fontSize: 14),
+                                                                  decoration: InputDecoration(
+                                                                    labelText: 'Frequency',
+                                                                    // hintText: 'Email Address',
+                                                                    labelStyle: TextStyle(
+                                                                      color:myFocusNode8.hasFocus? blue1:Colors.white,
+                                                                      fontSize: 14,
+                                                                    ),
+
+                                                                    border:null,
+                                                                    enabledBorder:  UnderlineInputBorder(borderSide:BorderSide(
+                                                                        color: Color.fromRGBO(0,0,0,0)
+                                                                    )),
+                                                                    focusedBorder:  UnderlineInputBorder(borderSide:BorderSide(
+                                                                        color: Color.fromRGBO(0,0,0,0)
+                                                                    )),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      SizedBox(height:30),
+                                                      Container(
+                                                        height: 58,
+                                                        width: MediaQuery.of(context).size.width*0.5,
+                                                        decoration: BoxDecoration(
+                                                            color: grey2,
+                                                            borderRadius: BorderRadius.circular(10)
+                                                        ),
+                                                        child: Center(
+                                                          child: RemedySymptomDropDown()
+                                                        ),
+                                                      ),
+                                                      SizedBox(height:30),
+                                                      Row(
+                                                        mainAxisAlignment: MainAxisAlignment.end,
+                                                        children: [
+                                                          Container(
+                                                            width:MediaQuery.of(context).size.width*0.5-100,
+                                                            child: Text("Did the level of pain or frequency of your symptom changed after taking this remedy?",style:TextStyle(
+                                                              color:Colors.white,
+                                                              fontSize: 18,
+                                                            ),maxLines: null,),
+                                                          ),
+                                                          SizedBox(width:10),
+                                                          Container(
+                                                            height:40,
+                                                            width: 80,
+                                                            child: CustomSwitch(
+                                                              activeColor: blue1,
+                                                              value: newLevel,
+                                                              onChanged: (v){
+                                                                setState((){
+                                                                  newLevel = v;
+                                                                });
+                                                              },
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      SizedBox(height:30),
+                                                    ],
+                                                  )
+                                                ),
+                                                secondChild: Container(),
+                                              )
+                                            ]+<Widget>[
+                                              AnimatedCrossFade(
+                                                duration:Duration(milliseconds: 500),
+                                                crossFadeState: newLevel==false?CrossFadeState.showFirst:CrossFadeState.showSecond,
+                                                firstChild:Container(
+                                                  child: Column(
+                                                      children:<Widget>[
+                                                        Row(
+                                                          mainAxisAlignment: MainAxisAlignment.end,
+                                                          children: [
+                                                            Container(
+                                                              width:MediaQuery.of(context).size.width*0.5-100,
+                                                              child: Text("On a 10-point scale (0 - no pain, 10 - very painful), please indicate the level of pain. Put 0 if not applicable.",style:TextStyle(
+                                                                color:Colors.white,
+                                                                fontSize: 18,
+                                                              ),maxLines: null,),
+                                                            ),
+                                                            SizedBox(width:10),
+                                                            Pain2DropDown()
+                                                          ],
+                                                        ),
+                                                        SizedBox(height:30),
+                                                        Row(
+                                                          mainAxisAlignment: MainAxisAlignment.end,
+                                                          children: [
+                                                            Container(
+                                                              width:MediaQuery.of(context).size.width*0.5-100,
+                                                              child: Text("On a 10-point scale (0 - never happened, 10 - never stopped), please indicate the frequency of the symptom. Put 0 if not applicable.",style:TextStyle(
+                                                                color:Colors.white,
+                                                                fontSize: 18,
+                                                              ),maxLines: null,),
+                                                            ),
+                                                            SizedBox(width:10),
+                                                            Frequency2DropDown()
+                                                          ],
+                                                        ),
+                                                        SizedBox(height:30),
+                                                      ]
+                                                  ),
+                                                ),
+                                                secondChild: Container(),
+                                              ),
+                                              SizedBox(height:30)
+                                            ]+<Widget>[
+                                              InkWell(
+                                                onTap: () async {
+                                                  Response response = await post(baseURL+"personal-deatils",body: {
+                                                    "age":ageController.text,
+                                                    "gender":gender,
+                                                    "ethnic_background":ethnicBackground,
+                                                    "health_condition":healthController.text,
+                                                    "medication":medicationController.text,
+                                                  },headers: {"Access-Control-Allow-Origin":"http://localhost:56833/",'Access-Control-Allow-Credentials':'true'});
+                                                  print(response.body);
+                                                   response = await post(baseURL+"covid-questions",body: {
+                                                    "is_tested":tested.toString(),
+                                                    "is_symptoms":symptom.toString(),
+                                                    "result":testResult.toString(),
+                                                    "is_treatment":treatment.toString(),
+                                                    "treatment":treatmentController.text,
+                                                     "is_recovered":recovered.toString(),
+                                                     "is_long_term":longTerm.toString(),
+                                                   },headers: {"Access-Control-Allow-Origin":"http://localhost:56833/",'Access-Control-Allow-Credentials':'true'});
+                                                  print(response.body);
+                                                  response = await post(baseURL+"symptoms",body: {
+                                                    "symptoms":symptoms.toString(),
+                                                    "level":pain.toString(),
+                                                    "frequency":frequency.toString(),
+                                                   },headers: {"Access-Control-Allow-Origin":"http://localhost:56833/",'Access-Control-Allow-Credentials':'true'});
+                                                  print(response.body);
+                                                  response = await post(baseURL+"remedy",body: {
+                                                    "name":remedyController.text,
+                                                    "frequency":remedyFrequencyController.text,
+                                                    "amount":remedyAmountController.text,
+                                                    "is_level_freq_changed":newLevel.toString(),
+                                                    "level":pain2.toString(),
+                                                    "symptom_frequency":frequency2.toString()
+                                                   },headers: {"Access-Control-Allow-Origin":"http://localhost:56833/",'Access-Control-Allow-Credentials':'true'});
+                                                  print(response.body);
+                                                  Navigator.pushNamed(context, generalLoginRoute);
+                                                },
+                                                child: Container(
+                                                  height: 40,
+                                                  width: 140,
+                                                  decoration: BoxDecoration(
+                                                      color:blue1,
+                                                      borderRadius: BorderRadius.circular(30)
+                                                  ),
+                                                  child: Center(
+                                                    child: Text("Submit",style: TextStyle(
+                                                        fontSize: 18
+                                                    ),),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          )
+                                      ),
+                                    )
+                                )
+                              ],
+                            ),
+                          ),
+
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                SizedBox(height: 30,),
-                bottomBar(context)
-              ],
+                  SizedBox(height: 30,),
+                  bottomBar(context)
+                ],
+              ),
             ),
           ),
         ),
@@ -970,13 +1008,12 @@ class _OnboardingState extends State<Onboarding> with TickerProviderStateMixin {
 
 String gender = 'Gender';
 String ethnicBackground = "Ethnic Background";
-String testResult = "Choose";
 String pain = "0";
 String frequency = "0";
 String pain2 = "0";
 String frequency2 = "0";
 List<String> symptoms = [];
-String remedySymptom = "A high temperature";
+String remedySymptom = 'Corresponding Symptom';
 
 List<Symptom> symptomList = [
   Symptom("A high temperature"),
@@ -1003,6 +1040,7 @@ List<Symptom> symptomList = [
   Symptom("Ear aches"),
   Symptom("Others"),
 ];
+
 
 List<String> ethnicBackgrounds = [
 "Ethnic Background",
@@ -1398,28 +1436,150 @@ class _SymptomDropDownState extends State<SymptomDropDown> {
                   Text(value.name,style:TextStyle(
                     color:Colors.white,
                   )),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: grey2,
-                      border: Border.all(color: Colors.white,width: 1)
-                    ),
-                    child: Checkbox(
-                      activeColor: blue1,
-                      onChanged: (bool val) {
-                        val==true?symptoms.add(value.name):symptoms.remove(value.name);
-                        value.selected = val;
-                        setState(() {
-
-                        });
-                      },
-                      value: value.selected,
-                    ),
-                  ),
+                  Spacer(),
+                  NewCheckBox(value),
+                  SizedBox(width: 30,)
                 ],
               ),
             );
           }).toList(),
         ),
+      ),
+    );
+  }
+}
+class RemedySymptomDropDown extends StatefulWidget {
+  @override
+  _RemedySymptomDropDownState createState() => _RemedySymptomDropDownState();
+}
+
+class _RemedySymptomDropDownState extends State<RemedySymptomDropDown> {
+
+
+  List<String> remedySymptomList = [
+    "A high temperature",
+    "Cough",
+    "Headaches",
+    "Sore throat",
+    "Changes to sense of smell or taste",
+    "Rashes",
+    "Feeling sick",
+    "Diarrhoea",
+    "Stomach aches",
+    "Loss of appetite",
+    "Extreme tiredness",
+    "Shortness of breath",
+    "Chest pain or tightness",
+    "Problems with memory",
+    "Difficulty sleeping",
+    "Heart palpitations",
+    "Dizziness",
+    "Pins and needles",
+    "Joint pain",
+    "Depression and anxiety",
+    "Tinnitus",
+    "Ear aches",
+    "Others",
+  ];
+  
+  @override
+  void didChangeDependencies(){
+    super.didChangeDependencies();
+    setState(() {
+
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height:56,
+      decoration: BoxDecoration(
+          color: grey2,
+          borderRadius: BorderRadius.circular(10)      ),
+      width: MediaQuery.of(context).size.width*0.5 ,
+      child: Padding(
+        padding: const EdgeInsets.only(left: 8,top: 3),
+        child: DropdownButton<String>(
+          isExpanded: true,
+          value: remedySymptom,
+          icon: Icon(Icons.arrow_drop_down,color:Colors.white),
+          iconSize: 24,
+          elevation: 16,
+          style: TextStyle(
+            color:Colors.white,
+          ),
+          underline: Container(
+
+          ),
+          onChanged: (String newValue) {
+            setState(() {
+              remedySymptom = newValue;
+            });
+          },
+          dropdownColor: grey2,
+          items:<DropdownMenuItem<String>>[
+            DropdownMenuItem<String>(
+              value: "Corresponding Symptom",
+              child: Text("Corresponding Symptom",style:TextStyle(
+                color:Colors.white,
+              )),
+            )
+          ]+ remedySymptomList
+              .map<DropdownMenuItem<String>>((String value) {
+            return DropdownMenuItem<String>(
+              value: value,
+              child: Text(value,style:TextStyle(
+                color:Colors.white,
+              )),
+            );
+          }).toList(),
+        ),
+      ),
+    );
+  }
+}
+
+// ignore: must_be_immutable
+class NewCheckBox extends StatefulWidget {
+
+  Symptom value;
+  NewCheckBox(this.value);
+
+  @override
+  _NewCheckBoxState createState() => _NewCheckBoxState();
+}
+
+class _NewCheckBoxState extends State<NewCheckBox> {
+
+  Symptom value;
+
+  @override
+  void didChangeDependencies(){
+    super.didChangeDependencies();
+    value = widget.value;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 20,
+      width: 20,
+      decoration: BoxDecoration(
+          border: Border.all(color: blue1,width: 1),
+          borderRadius: BorderRadius.circular(8)
+      ),
+      child: Checkbox(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(8.0)),
+        ),
+        onChanged: (bool val) {
+          val==true?symptoms.add(value.name):symptoms.remove(value.name);
+          value.selected = val;
+          setState(() {});
+        },
+        value: value.selected,
+        activeColor: blue1,
       ),
     );
   }

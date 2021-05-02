@@ -1,9 +1,12 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:pie_chart/pie_chart.dart';
 import 'package:remedious/DataModels/BarChartModels.dart';
 import 'package:remedious/DataModels/GeneralUser.dart';
 import 'package:remedious/styles.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:smooth_scroll_web/smooth_scroll_web.dart';
 
 import '../CommonWidgetMaker.dart';
 
@@ -24,14 +27,13 @@ class _AcademicHomeState extends State<AcademicHome> {
   Widget pieChart;
 
   List<Color> defaultColorList = [
-    Color(0xFFff7675),
-    Color(0xFF74b9ff),
-    Color(0xFF55efc4),
-    Color(0xFFffeaa7),
-    Color(0xFFa29bfe),
-    Color(0xFFfd79a8),
-    Color(0xFFe17055),
-    Color(0xFF00b894),
+    Color(0xFF034c81),
+    Color(0xFF2ca3fa),
+    Color(0xFF5ba2f4),
+    Color(0xFF7f85fc),
+    Color(0xFFc9bbaa),
+    Color(0xFFffffff),
+    blue1
   ];
   List<String> symptoms = [
     "High Temperature",
@@ -45,6 +47,8 @@ class _AcademicHomeState extends State<AcademicHome> {
 
 
   String selectedSymptom = "High Temperature";
+  
+  ScrollController controller1 = ScrollController();
   @override
   void initState(){
     super.initState();
@@ -79,214 +83,257 @@ class _AcademicHomeState extends State<AcademicHome> {
       backgroundColor: bgColor,
       body:Container(
         color: bgColor,
-        child: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-            Container(
-            height:60,
-            width: MediaQuery.of(context).size.width,
-            color: Colors.black,
-            child: Stack(
-              children: [
-                Row(
-                  children: <Widget>[
-                    SizedBox(width:30),
-                    Image(
-                      image: AssetImage('images/Logo.png'),
-                    ),
-                    SizedBox(width:30),
-                    Text("Home",style: TextStyle(
-                        color: blue1,
-                        fontSize: 14
-                    ),),
-                    SizedBox(width:30),
-                    Text("Dashboard",style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 14
-                    ),),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Center(
-                      child: Icon(Icons.notifications,color:blue1),
-
-                    ),
-                    SizedBox(width: 20,),
-                    Center(
-                      child: Container(
-                        height: 45,
-                        constraints: BoxConstraints(
-                            minWidth: 150
-                        ),
-                        decoration: BoxDecoration(
-                          border: Border.all(color: blue1,width: 2),
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            SizedBox(width:20),
-                            Container(
-                                height: 30,
-                                width: 30,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  border: Border.all(color: blue1),
-                                ),
-                                child: Icon(Icons.person,color:blue1,size: 25,)
-                            ),
-                            SizedBox(width: 20,),
-                            Text(user.firstName,style: TextStyle(
-                                color: blue1,
-                                fontSize: 14
-                            ),)
-                          ],
-                        ),
-                      ),
-                    ),
-                    SizedBox(width: 30,)
-                  ],
-                )
-              ],
-            ),
-          ),
-              SizedBox(height: 50,),
+        child: SmoothScrollWeb(
+          controller: controller1,
+          child: SingleChildScrollView(
+            physics: NeverScrollableScrollPhysics(),
+            controller: controller1,
+            child: Column(
+              children: <Widget>[
               Container(
-                height: 58,
-                width: 450,
-                decoration: BoxDecoration(
-                    color: grey2,
-                    borderRadius: BorderRadius.circular(29),
-                    border: Border.all(color: grey3,width: 2)
-                ),
-                child: Center(
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 10,top: 3,right: 5),
-                    child: TextFormField(
-                      controller: searchController,
-                      style: TextStyle(color:grey3,fontSize: 14),
-                      decoration: InputDecoration(
-                        prefixIcon: InkWell(
-                          child: Icon(
-                            Icons.search,
-                            color: grey3,
+              height:60,
+              width: MediaQuery.of(context).size.width,
+              color: Colors.black,
+              child: Stack(
+                children: [
+                  Row(
+                    children: <Widget>[
+                      SizedBox(width:30),
+                      Image(
+                        image: AssetImage('images/Logo.png'),
+                      ),
+                      SizedBox(width:30),
+                      Text("Home",style: TextStyle(
+                          color: blue1,
+                          fontSize: 14
+                      ),),
+                      SizedBox(width:30),
+                      InkWell(
+                        onTap: (){
+                          Navigator.pushNamed(context, academicDatabaseRoute,arguments:user);
+                        },
+                        child: Text("Database",style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14
+                        ),),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Center(
+                        child: Icon(Icons.notifications,color:blue1),
+
+                      ),
+                      SizedBox(width: 20,),
+                      Center(
+                        child: Container(
+                          height: 45,
+                          constraints: BoxConstraints(
+                              minWidth: 150
+                          ),
+                          decoration: BoxDecoration(
+                            border: Border.all(color: blue1,width: 2),
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              SizedBox(width:20),
+                              Container(
+                                  height: 30,
+                                  width: 30,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    border: Border.all(color: blue1),
+                                  ),
+                                  child: Icon(Icons.person,color:blue1,size: 25,)
+                              ),
+                              SizedBox(width: 20,),
+                              Text(user.firstName,style: TextStyle(
+                                  color: blue1,
+                                  fontSize: 14
+                              ),)
+                            ],
                           ),
                         ),
-                        hintText: 'Search symptoms or remedies',
-                        hintStyle: TextStyle(color:grey3,fontSize: 14),
-                        border:null,
-                        enabledBorder:  UnderlineInputBorder(borderSide:BorderSide(
-                            color: Color.fromRGBO(0,0,0,0)
-                        )),
-                        focusedBorder:  UnderlineInputBorder(borderSide:BorderSide(
-                            color: Color.fromRGBO(0,0,0,0)
-                        )),
                       ),
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(height:50),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.black,
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: barGraph,
-                      )
-                  ),
-                  Container(
-                    height: MediaQuery.of(context).size.height*0.7,
-                    width: 150,
-                    color: Colors.white,
-                    child: Column(
-                      children: symptoms.map((e) {
-                        return Container(
-                          height: MediaQuery.of(context).size.height*0.1,
-                          width: 150,
-                          decoration: BoxDecoration(
-                            color: selectedSymptom==e?blue1: grey2,
-                          ),
-                          child: Center(
-                            child: Text(e,style: TextStyle(
-                              color:selectedSymptom==e?Colors.black:Colors.white,
-                              fontSize: 22,
-                              fontWeight: FontWeight.bold
-                            ),textAlign: TextAlign.center,),
-                          ),
-                        );
-                      }).toList(),
-                    ),
+                      SizedBox(width: 30,)
+                    ],
                   )
                 ],
               ),
-              SizedBox(height:30),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Container(
+            ),
+                SizedBox(height: 60,),
+                Container(
+                  height:50,
+                  width: MediaQuery.of(context).size.width*0.6,
+                  decoration: BoxDecoration(
+                      color:blue1,
+                      borderRadius: BorderRadius.circular(10)
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Image(
+                        image: AssetImage("images/Dashboard.webp"),
+                      ),
+                      SizedBox(width: 10,),
+                      Text("Dashboard",style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 24
+                      ),)
+                    ],
+                  ),
+                ),
+                SizedBox(height: 30,),
+                Container(
+                  height: 58,
+                  width: 450,
+                  decoration: BoxDecoration(
+                      color: grey2,
+                      borderRadius: BorderRadius.circular(29),
+                      border: Border.all(color: grey3,width: 2)
+                  ),
+                  child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 10,top: 3,right: 5),
+                      child: TextFormField(
+                        controller: searchController,
+                        style: TextStyle(color:grey3,fontSize: 14),
+                        decoration: InputDecoration(
+                          prefixIcon: InkWell(
+                            child: Icon(
+                              Icons.search,
+                              color: grey3,
+                            ),
+                          ),
+                          hintText: 'Search symptoms or remedies',
+                          hintStyle: TextStyle(color:grey3,fontSize: 14),
+                          border:null,
+                          enabledBorder:  UnderlineInputBorder(borderSide:BorderSide(
+                              color: Color.fromRGBO(0,0,0,0)
+                          )),
+                          focusedBorder:  UnderlineInputBorder(borderSide:BorderSide(
+                              color: Color.fromRGBO(0,0,0,0)
+                          )),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height:50),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Container(
                       decoration: BoxDecoration(
                         color: Colors.black,
                         borderRadius: BorderRadius.circular(15),
                       ),
-                      child: Column(
-                        children: [
-                          SizedBox(height:10),
-                          Text("Last 15 days",
-                              style: TextStyle(
-                                  color: blue1, fontSize: 22,
-                                  fontWeight: FontWeight.bold)
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: pieChart,
-                          ),
-                        ],
-                      )
-                  ),
-                  Container(
-                    height: MediaQuery.of(context).size.height*0.7,
-                    width: 150,
-                    child:Padding(
-                      padding: EdgeInsets.only(left: 5),
-                      child: Wrap(
-                        direction:Axis.vertical,
-                        runSpacing: 15,
-                        crossAxisAlignment: WrapCrossAlignment.start,
-                        children: symptoms
-                            .map(
-                              (item) => Legend(
-                            title: item,
-                            color: getColor(
-                              defaultColorList,
-                              symptoms.indexOf(item),
-                            ),
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color:Colors.white,
-                                fontSize: 18
-                            ),
-                            legendShape: BoxShape.rectangle,
-                          ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: barGraph,
                         )
-                            .toList(),
+                    ),
+                    Container(
+                      height: MediaQuery.of(context).size.height*0.7+2,
+                      width: 150,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(color: Colors.black,width: 1)
+                      ),
+                      child: Column(
+                        children: symptoms.map((e) {
+                          return InkWell(
+                            onTap: (){
+                              selectedSymptom = e;
+                              setState(() {
+
+                              });
+                              makeBarChart(e);
+                            },
+                            child: Container(
+                              height: MediaQuery.of(context).size.height*0.1,
+                              width: 150,
+                              decoration: BoxDecoration(
+                                color: selectedSymptom==e?blue1: grey2,
+                              ),
+                              child: Center(
+                                child: Text(e,style: TextStyle(
+                                  color:selectedSymptom==e?Colors.black:Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold
+                                ),textAlign: TextAlign.center,),
+                              ),
+                            ),
+                          );
+                        }).toList(),
                       ),
                     )
-                  )
-                ],
-              ),
-              SizedBox(height:30),
-              bottomBar(context),
-            ],
+                  ],
+                ),
+                SizedBox(height:30),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Container(
+                        decoration: BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: Column(
+                          children: [
+                            SizedBox(height:10),
+                            Text("Last 15 days",
+                                style: TextStyle(
+                                    color: blue1, fontSize: 22,
+                                    fontWeight: FontWeight.bold)
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: pieChart,
+                            ),
+                          ],
+                        )
+                    ),
+                    Container(
+                      height: MediaQuery.of(context).size.height*0.7,
+                      width: 150,
+                      child:Padding(
+                        padding: EdgeInsets.only(left: 5),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: symptoms
+                              .map(
+                                (item) => Legend(
+                              title: item,
+                              color: getColor(
+                                defaultColorList,
+                                symptoms.indexOf(item),
+                              ),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color:Colors.white,
+                                  fontSize: 16
+                              ),
+                              legendShape: BoxShape.rectangle,
+                            ),
+                          )
+                              .toList(),
+                        ),
+                      )
+                    )
+                  ],
+                ),
+                SizedBox(height:30),
+                bottomBar(context),
+              ],
+            ),
           ),
         ),
       ),
@@ -294,34 +341,45 @@ class _AcademicHomeState extends State<AcademicHome> {
   }
 
   void makeBarChart(String disease) async {
+    barGraph = Container(
+      height: MediaQuery.of(context).size.height*0.7,
+      width:  MediaQuery.of(context).size.width*0.8,
+      child: Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
+    setState(() {
+
+    });
+    Random random = Random();
     List<BarChartModel> _barChartList = <BarChartModel>[
       BarChartModel(
         date: "01-05-2021",
-        cases: 56,
+        cases: random.nextInt(500)+100,
       ),
       BarChartModel(
         date: "30-04-2021",
-        cases: 68,
+        cases: random.nextInt(300)+50,
       ),
       BarChartModel(
         date: "29-04-2021",
-        cases: 23,
+        cases: random.nextInt(400)+80,
       ),
       BarChartModel(
         date: "28-04-2021",
-        cases: 67,
+        cases: random.nextInt(100)+100,
       ),
       BarChartModel(
         date: "27-04-2021",
-        cases: 11,
+        cases: random.nextInt(150),
       ),
       BarChartModel(
         date: "26-04-2021",
-        cases: 99,
+        cases: random.nextInt(500)+100,
       ),
       BarChartModel(
         date: "25-04-2021",
-        cases: 76,
+        cases: random.nextInt(200)+100,
       ),
       BarChartModel(
         date: "24-04-2021",
@@ -329,31 +387,31 @@ class _AcademicHomeState extends State<AcademicHome> {
       ),
       BarChartModel(
         date: "23-04-2021",
-        cases: 84,
+        cases: random.nextInt(500),
       ),
       BarChartModel(
         date: "22-04-2021",
-        cases: 29,
+        cases: random.nextInt(100)+100,
       ),
       BarChartModel(
         date: "21-04-2021",
-        cases: 38,
+        cases: random.nextInt(50)+30,
       ),
       BarChartModel(
         date: "20-04-2021",
-        cases: 73,
+        cases: random.nextInt(50),
       ),
       BarChartModel(
         date: "19-04-2021",
-        cases: 89,
+        cases: random.nextInt(300)+100,
       ),
       BarChartModel(
         date: "18-04-2021",
-        cases: 10,
+        cases: random.nextInt(500)+100,
       ),
       BarChartModel(
         date: "17-04-2021",
-        cases: 104,
+        cases: random.nextInt(200)+100,
       ),
     ].reversed.toList();
     int totalCases = 0;
@@ -368,7 +426,7 @@ class _AcademicHomeState extends State<AcademicHome> {
           measureFn: (BarChartModel series, _) => series.cases,
           colorFn: (BarChartModel series, _) => series.color),
     ];
-    Future.delayed(Duration(seconds: 3),(){
+    Future.delayed(Duration(seconds: 1,milliseconds: 500),(){
       barGraph = Container(
         height: MediaQuery.of(context).size.height*0.7,
         width: MediaQuery.of(context).size.width*0.8,
@@ -428,7 +486,7 @@ class _AcademicHomeState extends State<AcademicHome> {
       "Loss of taste":365,
       "Chest Pain":606,
     };
-    await Future.delayed(Duration(seconds:3));
+    await Future.delayed(Duration(seconds:1,milliseconds: 500));
     pieChart = Container(
       height: MediaQuery.of(context).size.height*0.7,
       width: MediaQuery.of(context).size.width*0.8,
@@ -440,6 +498,7 @@ class _AcademicHomeState extends State<AcademicHome> {
         // colorList: colorList,
         initialAngleInDegree: 0,
         chartType: ChartType.disc,
+        colorList: defaultColorList,
         ringStrokeWidth: 32,
         legendOptions: LegendOptions(
         //   showLegendsInRow: false,
@@ -496,12 +555,14 @@ class Legend extends StatelessWidget {
         SizedBox(
           width: 8.0,
         ),
-        Flexible(
-          fit: FlexFit.loose,
+        Container(
+          width: 105,
           child: Text(
             title,
             style: style,
             softWrap: true,
+            textAlign: TextAlign.center,
+            maxLines: null,
           ),
         ),
         SizedBox(

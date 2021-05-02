@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:remedious/Academic/AcademicDatabase.dart';
 import 'package:remedious/Academic/AcademicEmailVerification.dart';
 import 'package:remedious/Academic/AcademicHome.dart';
 import 'package:remedious/Academic/AcademicLogin.dart';
@@ -46,6 +47,7 @@ class MyApp extends StatelessWidget {
           onboardingRoute:(context)=>Onboarding(),
           generalHomeRoute:(context)=>GeneralHome(),
           academicHomeRoute:(context)=>AcademicHome(),
+          academicDatabaseRoute:(context)=>AcademicDatabase(),
         },
         // onGenerateRoute: (settings) {
         //   switch (settings.name) {

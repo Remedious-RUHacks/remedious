@@ -4,6 +4,7 @@ import 'package:remedious/CommonWidgetMaker.dart';
 import 'package:remedious/DataModels/GeneralUser.dart';
 import 'package:remedious/DataModels/Symptom&Remedy.dart';
 import 'package:remedious/styles.dart';
+import 'package:http/http.dart';
 
 class GeneralLogin extends StatefulWidget {
   @override
@@ -163,7 +164,10 @@ class _GeneralLoginState extends State<GeneralLogin> {
                 ),
                 SizedBox(height:30),
                 InkWell(
-                  onTap: (){
+                  onTap: () async {
+
+                    Response response = await post(baseURL+"login",body: {"email":emailController.text,"password":passController.text},headers: {"Access-Control-Allow-Origin":"http://localhost:56833/",'Access-Control-Allow-Credentials':'true'});
+                    print(response.body);
                     Navigator.pushNamed(context, generalHomeRoute,arguments: GeneralUser(firstName: "Sid",lastName: "Aggy",email: emailController.text,password: passController.text,symptoms: <Symptom>[Symptom("A high temperature")]));
                   },
                   child: Container(

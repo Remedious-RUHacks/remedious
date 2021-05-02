@@ -27,7 +27,8 @@ dependencies:
   url_strategy: ^0.2.0
   charts_flutter: ^0.10.0
   pie_chart: 4.0.1
-
+  http: ^0.12.0+2
+  smooth_scroll_web: ^0.0.4
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -56,6 +57,11 @@ flutter:
      - images/SideImage.webp
      - images/SmileyNervous.webp
      - images/Leaf.webp
+     - images/Dashboard.webp
+     - images/Database.webp
+     - images/DropDown.webp
+     - images/Search.webp
+     - images/Filter.webp
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

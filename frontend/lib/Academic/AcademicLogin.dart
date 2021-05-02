@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:remedious/CommonWidgetMaker.dart';
 import 'package:remedious/DataModels/GeneralUser.dart';
 import 'package:remedious/DataModels/Symptom&Remedy.dart';
@@ -163,8 +164,10 @@ class _AcademicLoginState extends State<AcademicLogin> {
                 ),
                 SizedBox(height:30),
                 InkWell(
-                  onTap: (){
-                    Navigator.pushNamed(context, academicHomeRoute,arguments: GeneralUser(firstName: "Sid",lastName: "Aggy",email: emailController.text,password: passController.text,symptoms: <Symptom>[Symptom("A high temperature")]));
+                  onTap: ()async{
+                    Response response = await post(baseURL+"login-academic",body: {"email":emailController.text,"password":passController.text},headers: {"Access-Control-Allow-Origin":"http://localhost:56833/",'Access-Control-Allow-Credentials':'true'});
+                    print(response.body);
+                    Navigator.pushNamed(context, academicHomeRoute,arguments: GeneralUser(firstName: "Sid",lastName: "Aggy",email: emailController.text,password: passController.text,symptoms: <Symptom>[Symptom("A high temperature")],age: 23,gender: "Male",ethnicBackground: "Indian"));
                   },
                   child: Container(
                     height: 40,

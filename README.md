@@ -27,3 +27,7 @@ The app also includes a discord bot that extracts validated information from rel
 ## Discord bot 
 
 Please refer to [this repo](https://github.com/Remedious-RUHacks/discord-bot)
+
+## Testing
+
+[Web app](http://remedious.tech/)

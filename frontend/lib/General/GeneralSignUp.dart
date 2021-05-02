@@ -264,7 +264,7 @@ class _GeneralSignUpState extends State<GeneralSignUp> {
               SizedBox(height:30),
               InkWell(
                 onTap: (){
-                  Navigator.pushNamed(context, generalEmailVerificationRoute);
+                  Navigator.pushNamed(context, onboardingRoute);
                 },
                 child: Container(
                   height: 40,

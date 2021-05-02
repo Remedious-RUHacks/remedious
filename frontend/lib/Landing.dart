@@ -92,14 +92,19 @@ class Landing extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Container(
-                            height: 45,
-                            width:160,
-                            decoration: BoxDecoration(
-                              color: blue1,
-                              borderRadius: BorderRadius.circular(5)
+                          InkWell(
+                            onTap:(){
+                              Navigator.pushNamed(context, generalSignUpRoute);
+                            },
+                            child: Container(
+                              height: 45,
+                              width:160,
+                              decoration: BoxDecoration(
+                                color: blue1,
+                                borderRadius: BorderRadius.circular(5)
+                              ),
+                              child: Center(child: Text("Register")),
                             ),
-                            child: Center(child: Text("Register")),
                           ),
                           Container(
                             height: 45,

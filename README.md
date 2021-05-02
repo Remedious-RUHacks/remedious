@@ -28,7 +28,45 @@ pie_chart: 4.0.1
 http: ^0.12.0+2
 
 
-**API**
+**API requirements**
+
+aniso8601==9.0.1
+
+click==7.1.2
+
+Flask==1.1.2
+
+Flask-Login==0.5.0
+
+Flask-MySQLdb==0.2.0
+
+Flask-RESTful==0.3.8
+
+Flask-SQLAlchemy==2.5.1
+
+greenlet==1.0.0
+
+itsdangerous==1.1.0
+
+Jinja2==2.11.3
+
+MarkupSafe==1.1.1
+
+mysql-connector-python==8.0.24
+
+mysqlclient==2.0.3
+
+protobuf==3.15.8
+
+python-dotenv==0.17.1
+
+pytz==2021.1
+
+six==1.15.0
+
+SQLAlchemy==1.4.12
+
+Werkzeug==1.0.1
 
 
 ## Discord bot 

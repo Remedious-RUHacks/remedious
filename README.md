@@ -1,7 +1,8 @@
-# remedious
+# Remedious
 
-Project details:
-https://devpost.com/software/remedious
+Project submitted to RU Hacks 2021: Digital
+
+[Project details](https://devpost.com/software/remedious)
 
 ##Web app 
 
@@ -13,4 +14,4 @@ https://devpost.com/software/remedious
 
 ##Discord bot 
 
-Please refer to https://github.com/Remedious-RUHacks/discord-bot
+Please refer to [this repo] (https://github.com/Remedious-RUHacks/discord-bot)

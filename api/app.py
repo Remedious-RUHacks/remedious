@@ -2,7 +2,7 @@ from flask import Flask, request
 from flask_login import LoginManager, current_user, logout_user, login_user, UserMixin , login_required
 from modals import db, User, Academic, PersonalDetail, Covid, Symptom, Remedy
 from app_config import app
-
+from datetime import datetime
 
 # Login
 login_manager = LoginManager()
@@ -202,24 +202,27 @@ def symptoms():
     symptoms = Symptom.query.filter_by(user_id= current_user.id).first()
 
     if not symptoms and request.method=="PUT":
-        new_detail = Covid(request.form.get("age"), 
-                                    request.form.get("symptoms"),
+        new_detail = Symptom( request.form.get("symptoms"),
                                     request.form.get("level"),
                                     request.form.get("frequency"),
-                                    current_user)
+                                    current_user,
+                                    datetime.now().strftime("%m/%d/%Y")
+                                    )
         db.session.add(new_detail)
         db.session.commit()
         details = {"id": new_detail.id, "symptoms": new_detail.symptoms, 
                     "level": new_detail.level, 
-                    "frequency": new_detail.frequency, 
+                    "frequency": new_detail.frequency,
+                    "date": new_detail.date, 
                     }
         return {"Success": details}
     
     details = {"id": new_detail.id, "symptoms": new_detail.symptoms, 
                     "level": new_detail.level, 
                     "frequency": new_detail.frequency, 
+                    "date": new_detail.date
                     }
-    return {"Personal Details": details}
+    return {"Symptoms Details": details}
          
 @login_required         
 @app.route("/remedy", methods=["PUT", "GET"])
@@ -237,6 +240,7 @@ def remedy():
                                     request.form.get("is_level_freq_changed"),
                                     request.form.get("level"),
                                     request.form.get("symptom_frequency"),
+                                    datetime.now().strftime("%m/%d/%Y")
                                     )
         db.session.add(new_detail)
         db.session.commit()
@@ -247,6 +251,7 @@ def remedy():
                     "is_level_freq_changed": new_detail.is_level_freq_changed, 
                     "level": new_detail.level, 
                     "symptom_frequency": new_detail.symptom_frequency, 
+                    "date": new_detail.date
                     }
         return {"Success": details}
     
@@ -257,11 +262,10 @@ def remedy():
                     "is_level_freq_changed": new_detail.is_level_freq_changed, 
                     "level": new_detail.level, 
                     "symptom_frequency": new_detail.symptom_frequency, 
+                    "date": new_detail.date
                     }
-    return {"Personal Details": details}
+    return {"Remedy Details": details}
          
-
-
 
 if __name__ == '__main__':
     app.run(debug=True)

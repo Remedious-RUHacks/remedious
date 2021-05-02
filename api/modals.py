@@ -82,6 +82,7 @@ class Symptom(db.Model):
     symptoms = db.Column(db.String(180), nullable=False)
     level = db.Column(db.String(180), nullable=False)
     frequency = db.Column(db.String(180), nullable=False)
+    date = db.Column(db.String(180), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     user = db.relationship('User', backref=db.backref('symptoms', lazy=True))
 
@@ -100,6 +101,7 @@ class Remedy(db.Model):
     name = db.Column(db.String(180), nullable=False)
     amount = db.Column(db.String(180), nullable=False)
     frequency = db.Column(db.String(180), nullable=False)
+    date = db.Column(db.String(180), nullable=False)
     symptom_id = db.Column(db.Integer, db.ForeignKey('symptom.id'), nullable=False)
     symptom = db.relationship('Symptom', backref=db.backref('remedys', lazy=True))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)

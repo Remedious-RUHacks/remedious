@@ -1,9 +1,5 @@
 # Remedious
 
-Project submitted to RU Hacks 2021: Digital
-
-[Project details](https://devpost.com/software/remedious)
-
 ## About
 
 Remedious is a web app for validating remedies for long covid. The app collects data including demographic data (e.g. age/ gender), long covid symptoms, remedies and the severity and frequency of symptoms before and after taking remedies. The app then process and display the data in data visualization dashboard for researchers to do analysis.
